@@ -12,233 +12,70 @@ html, body {
   font-family: "Noto Sans JP", sans-serif;
   overflow: hidden;
 }
+.screen { position: relative; width: 100%; height: 100%; }
 
-.screen {
-  position: absolute;
-  top:0; left:0; right:0; bottom:0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.hidden { display: none; }
-
-/* 通常モード */
-#modeA { background:#fff; color:#000; }
-header img { max-width: 80%; height:auto; margin-top:1%; }
-
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2%;
-  margin: 2% auto;
-  justify-content: center;
-}
-
-.btn {
-  font-weight: bold;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  background: linear-gradient(180deg,#ffcc00,#ff9900);
-  box-shadow: 0 6px 0 #cc8800;
-  transition: .2s;
-}
-
-.btn:active {
-  transform: translateY(4px);
-  box-shadow: 0 2px 0 #cc8800;
-}
-
-/* スライドショーモード */
-#modeB { background:#000; }
+/* スライド画像 */
 .slide {
   position: absolute;
-  top:0; left:0; right:0; bottom:0;
+  top:0; left:0; width:100%; height:100%;
   background-size: cover;
-  background-position: center center;
+  background-position: center;
   opacity: 0;
-  animation: fade 100s infinite;
+  transition: opacity 1s;
 }
 
-@keyframes fade {
-  0%, 20%, 100% { opacity:0; }
-  5%, 15% { opacity:1; }
-}
-
-.slide:nth-child(1) { animation-delay:0s; }
-.slide:nth-child(2) { animation-delay:20s; }
-.slide:nth-child(3) { animation-delay:40s; }
-.slide:nth-child(4) { animation-delay:60s; }
-.slide:nth-child(5) { animation-delay:80s; }
-
+/* キャプション */
 .caption {
   position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translateX(-50%);
   color: #fff;
   font-weight: 700;
   text-align: center;
   text-shadow: 0 4px 12px rgba(0,0,0,0.7);
-  padding: 0.5% 1%;
+  padding: 1% 2%;
   border-radius: 6px;
   transition: opacity 1s;
 }
 
+/* 電話番号 */
 #phoneFooter {
   position: absolute;
+  left: 50%;
+  bottom: 15%;
+  transform: translateX(-50%);
   color: #fff;
   font-weight: bold;
   text-shadow: 0 0 10px rgba(0,0,0,0.7);
+  transition: opacity 1s;
 }
 
+/* QRリンク */
 #qrLinks {
   position: absolute;
+  bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   gap: 1%;
-  align-items: flex-end;
 }
-
-.qrItem {
-  text-align: center;
-  color: #fff;
-  white-space: nowrap;
-}
-
-.qrItem a { text-decoration: none; color: inherit; }
-
-.qrItem img {
-  display: block;
-  margin: auto;
-  border-radius: 12px;
-  transition: transform .25s, box-shadow .25s;
-}
-
-.qrItem img:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(255,255,255,0.7);
-}
-
+.qrItem { text-align: center; color: #fff; }
+.qrItem img { width: 6vw; height: auto; border-radius: 12px; transition: transform .25s; }
+.qrItem img:hover { transform: scale(1.1); }
 </style>
 </head>
 <body>
 
-<!-- 通常モード -->
-<div class="screen" id="modeA">
-  <header><img src="横長ロゴ.jpg" alt="logo"></header>
-  <div class="buttons">
-    <button class="btn" onclick="window.location.href='https://www.giant-bicycles.com/jp'">GIANT</button>
-    <button class="btn" onclick="window.location.href='https://cycle.panasonic.com/support/requestcatalog/'">パナソニック</button>
-    <button class="btn" onclick="window.location.href='https://www.japan.bianchi.com/'">BIANCHI</button>
-  </div>
-</div>
+<div class="screen" id="slideshow">
+  <div class="slide" id="slide0"></div>
+  <div class="slide" id="slide1"></div>
+  <div class="slide" id="slide2"></div>
+  <div class="slide" id="slide3"></div>
+  <div class="slide" id="slide4"></div>
 
-<!-- スライドショーモード -->
-<div class="screen hidden" id="modeB">
-  <div class="slide" style="background-image:url('横長ロゴ.jpg');"></div>
-  <div class="slide" style="background-image:url('大正13年店舗.jpg');"></div>
-  <div class="slide" style="background-image:url('店舗正面.jpg');"></div>
-  <div class="slide" style="background-image:url('店舗斜め.JPG');"></div>
-  <div class="slide" style="background-image:url('ピット.jpg');"></div>
-
-  <div id="caption" class="caption">ようこそ サイクルセンターヤマグチへ</div>
+  <div id="caption" class="caption"></div>
   <div id="phoneFooter">☎ 03-3372-6530</div>
 
   <div id="qrLinks">
-    <div class="qrItem">
-      <a href="https://www.instagram.com/" target="_blank">
-        <img src="Instagram.jpg" alt="Instagram"><div>Instagram</div>
-      </a>
-    </div>
-    <div class="qrItem">
-      <a href="https://x.com/" target="_blank">
-        <img src="X.png" alt="X"><div>X</div>
-      </a>
-    </div>
-    <div class="qrItem">
-      <a href="https://www.facebook.com/" target="_blank">
-        <img src="Facebook.png" alt="Facebook"><div>Facebook</div>
-      </a>
-    </div>
-    <div class="qrItem">
-      <a href="https://cyclecenteryamaguchi.com/" target="_blank">
-        <img src="HP.png" alt="公式HP"><div>公式HP</div>
-      </a>
-    </div>
-  </div>
-</div>
-
-<script>
-let modeA = document.getElementById('modeA');
-let modeB = document.getElementById('modeB');
-let caption = document.getElementById('caption');
-let phoneFooter = document.getElementById('phoneFooter');
-let qrLinks = document.getElementById('qrLinks');
-const buttons = document.querySelectorAll('.btn');
-const captions = [
-  "ようこそ サイクルセンターヤマグチへ",
-  "創業100年 中野区の街の自転車屋",
-  "電動アシストからスポーツ車まで幅広く対応",
-  "修理・点検・カスタムもお任せください",
-  ""
-];
-
-function startSlideshow(){
-  modeA.classList.add('hidden');
-  modeB.classList.remove('hidden');
-  caption.textContent = captions[0];
-  let idx = 0;
-  setInterval(()=>{
-    idx = (idx + 1) % captions.length;
-    caption.style.opacity = 0;
-    setTimeout(()=>{
-      caption.textContent = captions[idx];
-      caption.style.opacity = 1;
-    },1000);
-  },20000);
-}
-
-// 画面サイズに応じて文字・ボタン・QRを調整
-function resizeElements(){
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-
-  // 通常モードボタン
-  buttons.forEach(btn=>{
-    btn.style.width = (w*0.25)+'px';
-    btn.style.height = (h*0.12)+'px';
-    btn.style.fontSize = (w*0.03)+'px';
-  });
-
-  // キャプション
-  caption.style.fontSize = (w*0.05)+'px';
-  caption.style.top = (h*0.45)+'px';
-
-  // 電話番号
-  phoneFooter.style.fontSize = (w*0.04)+'px';
-  phoneFooter.style.bottom = (h*0.15)+'px';
-
-  // QRリンク
-  qrLinks.style.bottom = (h*0.02)+'px';
-  qrLinks.style.left = (w*0.5)+'px';
-  qrLinks.style.transform = 'translateX(-50%)';
-  const qrImgs = qrLinks.querySelectorAll('img');
-  qrImgs.forEach(img=>{
-    img.style.width = (w*0.06)+'px';
-  });
-}
-
-window.addEventListener('resize', resizeElements);
-window.addEventListener('load', resizeElements);
-
-document.addEventListener('click', ()=>{
-  if(modeA.classList.contains('hidden')){
-    modeA.classList.remove('hidden');
-    modeB.classList.add('hidden');
-  }else{
-    startSlideshow();
-  }
-});
-</script>
-
-</body>
-</html>
+    <div class="qrItem"><a href="https://www.instagram.com/" target="_blank"><img src="Instagram.jpg"><div>Instagram</_
