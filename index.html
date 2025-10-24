@@ -24,23 +24,24 @@ html, body {
   transition: opacity 1s;
 }
 
-/* 電話番号 */
+/* 電話番号（画面最上部に配置） */
 #phoneFooter {
   position: absolute;
   left: 50%;
-  top: 45%; /* ← QRよりかなり上に */
+  top: 1%; /* ← 上から約1cmの位置（画面高さの1%） */
   transform: translateX(-50%);
   color: #fff;
   font-weight: bold;
   text-shadow: 0 0 10px rgba(0,0,0,0.7);
   transition: opacity 1s;
+  font-size: 2.8vw;
 }
 
 /* キャプション（説明文） */
 .caption {
   position: absolute;
   left: 50%;
-  top: 60%; /* ← QRのすぐ上に固定 */
+  top: 60%; /* ← QRのすぐ上 */
   transform: translateX(-50%);
   color: #fff;
   font-weight: 700;
@@ -49,6 +50,7 @@ html, body {
   padding: 1% 2%;
   border-radius: 6px;
   transition: opacity 1s;
+  font-size: 3.2vw;
 }
 
 /* QRリンク */
@@ -113,7 +115,6 @@ const slides = [
 let current = 0;
 const slideElements = slides.map((_,i)=>document.getElementById('slide'+i));
 const captionEl = document.getElementById('caption');
-const phoneEl = document.getElementById('phoneFooter');
 
 function showSlide(idx){
   slideElements.forEach((el,i)=>{
@@ -130,24 +131,6 @@ function nextSlide(){
 
 showSlide(current);
 setInterval(nextSlide, 20000);
-
-// サイズ調整（動的対応）
-function resizeElements(){
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-
-  // 電話番号と文字の間隔を均等に
-  const phoneTop = h * 0.45;
-  const captionTop = h * 0.60;
-
-  phoneEl.style.top = phoneTop + 'px';
-  captionEl.style.top = captionTop + 'px';
-
-  phoneEl.style.fontSize = (w*0.04)+'px';
-  captionEl.style.fontSize = (w*0.045)+'px';
-}
-window.addEventListener('resize', resizeElements);
-window.addEventListener('load', resizeElements);
 
 /* ==== Chrome用：クリックでフルスクリーン ==== */
 const slideshow = document.getElementById('slideshow');
