@@ -2,39 +2,122 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>CYCLE CENTER YAMAGUCHI</title>
 <style>
-html,body{margin:0;height:100%;background:#000;font-family:"Noto Sans JP",sans-serif;overflow:hidden;}
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.hidden{display:none;}
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  font-family: "Noto Sans JP", sans-serif;
+  overflow: hidden;
+}
+
+.screen {
+  position: absolute;
+  top:0; left:0; right:0; bottom:0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hidden { display: none; }
 
 /* 通常モード */
-#modeA{background:#fff;color:#000;}
-header img{height:100px;margin-top:10px;}
-.buttons{display:flex;flex-direction:row;gap:40px;margin:auto;}
-.btn{width:400px;height:120px;font-size:40px;font-weight:bold;border:none;border-radius:20px;cursor:pointer;background:linear-gradient(180deg,#ffcc00,#ff9900);box-shadow:0 6px 0 #cc8800;transition:.2s;}
-.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #cc8800;}
+#modeA { background:#fff; color:#000; }
+header img { max-width: 80%; height:auto; margin-top:1%; }
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2%;
+  margin: 2% auto;
+  justify-content: center;
+}
+
+.btn {
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background: linear-gradient(180deg,#ffcc00,#ff9900);
+  box-shadow: 0 6px 0 #cc8800;
+  transition: .2s;
+}
+
+.btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #cc8800;
+}
 
 /* スライドショーモード */
-#modeB{background:#000;position:absolute;inset:0;}
-.slide{position:absolute;inset:0;background-size:cover;background-position:center center;opacity:0;animation:fade 100s infinite;}
-@keyframes fade{0%,20%,100%{opacity:0;}5%,15%{opacity:1;}}
-.slide:nth-child(1){animation-delay:0s;}
-.slide:nth-child(2){animation-delay:20s;}
-.slide:nth-child(3){animation-delay:40s;}
-.slide:nth-child(4){animation-delay:60s;}
-.slide:nth-child(5){animation-delay:80s;}
+#modeB { background:#000; }
+.slide {
+  position: absolute;
+  top:0; left:0; right:0; bottom:0;
+  background-size: cover;
+  background-position: center center;
+  opacity: 0;
+  animation: fade 100s infinite;
+}
 
-.caption{position:absolute;left:50%;transform:translateX(-50%);color:#fff;font-weight:700;text-align:center;text-shadow:0 4px 12px rgba(0,0,0,0.7);padding:10px 30px;border-radius:6px;font-size:60px;line-height:1.1;top:45%;transition:opacity 1s;}
-#phoneFooter{position:absolute;bottom:320px;left:50%;transform:translateX(-50%);color:#fff;font-size:50px;font-weight:bold;text-shadow:0 0 10px rgba(0,0,0,0.7);}
+@keyframes fade {
+  0%, 20%, 100% { opacity:0; }
+  5%, 15% { opacity:1; }
+}
 
-/* QRリンク */
-#qrLinks{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:60px;align-items:flex-end;}
-.qrItem{text-align:center;color:#fff;font-size:24px;white-space:nowrap;}
-.qrItem a{text-decoration:none;color:inherit;}
-.qrItem img{width:90px;height:90px;display:block;margin:auto;border-radius:12px;transition:transform .25s, box-shadow .25s;}
-.qrItem img:hover{transform:scale(1.1);box-shadow:0 0 20px rgba(255,255,255,0.7);}
+.slide:nth-child(1) { animation-delay:0s; }
+.slide:nth-child(2) { animation-delay:20s; }
+.slide:nth-child(3) { animation-delay:40s; }
+.slide:nth-child(4) { animation-delay:60s; }
+.slide:nth-child(5) { animation-delay:80s; }
+
+.caption {
+  position: absolute;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.7);
+  padding: 0.5% 1%;
+  border-radius: 6px;
+  transition: opacity 1s;
+}
+
+#phoneFooter {
+  position: absolute;
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+}
+
+#qrLinks {
+  position: absolute;
+  display: flex;
+  gap: 1%;
+  align-items: flex-end;
+}
+
+.qrItem {
+  text-align: center;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.qrItem a { text-decoration: none; color: inherit; }
+
+.qrItem img {
+  display: block;
+  margin: auto;
+  border-radius: 12px;
+  transition: transform .25s, box-shadow .25s;
+}
+
+.qrItem img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(255,255,255,0.7);
+}
+
 </style>
 </head>
 <body>
@@ -60,7 +143,6 @@ header img{height:100px;margin-top:10px;}
   <div id="caption" class="caption">ようこそ サイクルセンターヤマグチへ</div>
   <div id="phoneFooter">☎ 03-3372-6530</div>
 
-  <!-- QRリンク -->
   <div id="qrLinks">
     <div class="qrItem">
       <a href="https://www.instagram.com/" target="_blank">
@@ -89,6 +171,9 @@ header img{height:100px;margin-top:10px;}
 let modeA = document.getElementById('modeA');
 let modeB = document.getElementById('modeB');
 let caption = document.getElementById('caption');
+let phoneFooter = document.getElementById('phoneFooter');
+let qrLinks = document.getElementById('qrLinks');
+const buttons = document.querySelectorAll('.btn');
 const captions = [
   "ようこそ サイクルセンターヤマグチへ",
   "創業100年 中野区の街の自転車屋",
@@ -112,7 +197,40 @@ function startSlideshow(){
   },20000);
 }
 
-document.addEventListener('click',()=>{
+// 画面サイズに応じて文字・ボタン・QRを調整
+function resizeElements(){
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+  // 通常モードボタン
+  buttons.forEach(btn=>{
+    btn.style.width = (w*0.25)+'px';
+    btn.style.height = (h*0.12)+'px';
+    btn.style.fontSize = (w*0.03)+'px';
+  });
+
+  // キャプション
+  caption.style.fontSize = (w*0.05)+'px';
+  caption.style.top = (h*0.45)+'px';
+
+  // 電話番号
+  phoneFooter.style.fontSize = (w*0.04)+'px';
+  phoneFooter.style.bottom = (h*0.15)+'px';
+
+  // QRリンク
+  qrLinks.style.bottom = (h*0.02)+'px';
+  qrLinks.style.left = (w*0.5)+'px';
+  qrLinks.style.transform = 'translateX(-50%)';
+  const qrImgs = qrLinks.querySelectorAll('img');
+  qrImgs.forEach(img=>{
+    img.style.width = (w*0.06)+'px';
+  });
+}
+
+window.addEventListener('resize', resizeElements);
+window.addEventListener('load', resizeElements);
+
+document.addEventListener('click', ()=>{
   if(modeA.classList.contains('hidden')){
     modeA.classList.remove('hidden');
     modeB.classList.add('hidden');
@@ -121,5 +239,6 @@ document.addEventListener('click',()=>{
   }
 });
 </script>
+
 </body>
 </html>
