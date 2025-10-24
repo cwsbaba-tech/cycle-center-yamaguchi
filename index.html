@@ -28,7 +28,7 @@ html, body {
 #phoneFooter {
   position: absolute;
   left: 50%;
-  top: 25%; /* ←以前より上げました（35%→25%） */
+  top: 20%; /* ←さらに上に移動 */
   transform: translateX(-50%);
   color: #fff;
   font-weight: bold;
@@ -40,7 +40,7 @@ html, body {
 .caption {
   position: absolute;
   left: 50%;
-  top: 35%; /* ←以前より上げました（45%→35%） */
+  top: 30%; /* ←さらに上に移動（35%→30%） */
   transform: translateX(-50%);
   color: #fff;
   font-weight: 700;
@@ -54,14 +54,14 @@ html, body {
 /* QRリンク */
 #qrLinks {
   position: absolute;
-  bottom: 2%;
+  bottom: 0.5%; /* ←さらに下に移動（2%→0.5%） */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 1%;
+  gap: 2vw;
 }
-.qrItem { text-align: center; color: #fff; }
-.qrItem img { width: 6vw; height: auto; border-radius: 12px; transition: transform .25s; }
+.qrItem { text-align: center; color: #fff; font-size: 1vw; }
+.qrItem img { width: 5.5vw; height: auto; border-radius: 12px; transition: transform .25s; }
 .qrItem img:hover { transform: scale(1.1); }
 
 /* フルスクリーン案内 */
@@ -70,7 +70,7 @@ html, body {
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   color: white;
-  font-size: 3vw;
+  font-size: 2.5vw;
   text-align: center;
   text-shadow: 0 0 10px rgba(0,0,0,0.7);
   background: rgba(0,0,0,0.4);
@@ -131,16 +131,14 @@ function nextSlide(){
 showSlide(current);
 setInterval(nextSlide, 20000);
 
-// 画面サイズに応じて文字・QRをリサイズ
+// サイズ調整
 function resizeElements(){
   const w = window.innerWidth;
   const h = window.innerHeight;
-  captionEl.style.fontSize = (w*0.05)+'px';
-  captionEl.style.top = (h*0.35)+'px'; /* ←変更 */
+  captionEl.style.fontSize = (w*0.045)+'px';
+  captionEl.style.top = (h*0.30)+'px';
   phoneEl.style.fontSize = (w*0.04)+'px';
-  phoneEl.style.top = (h*0.25)+'px'; /* ←変更 */
-  const qrImgs = document.querySelectorAll('#qrLinks img');
-  qrImgs.forEach(img=>img.style.width = (w*0.06)+'px');
+  phoneEl.style.top = (h*0.20)+'px';
 }
 window.addEventListener('resize', resizeElements);
 window.addEventListener('load', resizeElements);
@@ -151,16 +149,16 @@ const fullscreenText = document.getElementById('clickToFullscreen');
 
 slideshow.addEventListener('click', () => {
   openFullscreen();
-  fullscreenText.style.display = 'none'; // 全画面化後に非表示
+  fullscreenText.style.display = 'none';
 });
 
 function openFullscreen() {
   const el = document.documentElement;
   if (el.requestFullscreen) {
     el.requestFullscreen();
-  } else if (el.webkitRequestFullscreen) { /* Safari */
+  } else if (el.webkitRequestFullscreen) {
     el.webkitRequestFullscreen();
-  } else if (el.msRequestFullscreen) { /* IE11 */
+  } else if (el.msRequestFullscreen) {
     el.msRequestFullscreen();
   }
 }
