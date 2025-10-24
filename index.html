@@ -28,7 +28,7 @@ html, body {
 #phoneFooter {
   position: absolute;
   left: 50%;
-  top: 20%; /* ←さらに上に移動 */
+  top: 45%; /* ← QRよりかなり上に */
   transform: translateX(-50%);
   color: #fff;
   font-weight: bold;
@@ -36,11 +36,11 @@ html, body {
   transition: opacity 1s;
 }
 
-/* キャプション */
+/* キャプション（説明文） */
 .caption {
   position: absolute;
   left: 50%;
-  top: 30%; /* ←さらに上に移動（35%→30%） */
+  top: 60%; /* ← QRのすぐ上に固定 */
   transform: translateX(-50%);
   color: #fff;
   font-weight: 700;
@@ -54,7 +54,7 @@ html, body {
 /* QRリンク */
 #qrLinks {
   position: absolute;
-  bottom: 0.5%; /* ←さらに下に移動（2%→0.5%） */
+  bottom: 1%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -131,14 +131,20 @@ function nextSlide(){
 showSlide(current);
 setInterval(nextSlide, 20000);
 
-// サイズ調整
+// サイズ調整（動的対応）
 function resizeElements(){
   const w = window.innerWidth;
   const h = window.innerHeight;
-  captionEl.style.fontSize = (w*0.045)+'px';
-  captionEl.style.top = (h*0.30)+'px';
+
+  // 電話番号と文字の間隔を均等に
+  const phoneTop = h * 0.45;
+  const captionTop = h * 0.60;
+
+  phoneEl.style.top = phoneTop + 'px';
+  captionEl.style.top = captionTop + 'px';
+
   phoneEl.style.fontSize = (w*0.04)+'px';
-  phoneEl.style.top = (h*0.20)+'px';
+  captionEl.style.fontSize = (w*0.045)+'px';
 }
 window.addEventListener('resize', resizeElements);
 window.addEventListener('load', resizeElements);
