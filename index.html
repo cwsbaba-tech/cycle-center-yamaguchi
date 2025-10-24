@@ -28,7 +28,7 @@ html, body {
 #phoneFooter {
   position: absolute;
   left: 50%;
-  top: 35%; /* キャプションより上 */
+  top: 25%; /* ←以前より上げました（35%→25%） */
   transform: translateX(-50%);
   color: #fff;
   font-weight: bold;
@@ -40,7 +40,7 @@ html, body {
 .caption {
   position: absolute;
   left: 50%;
-  top: 45%; /* 電話番号の下 */
+  top: 35%; /* ←以前より上げました（45%→35%） */
   transform: translateX(-50%);
   color: #fff;
   font-weight: 700;
@@ -136,9 +136,9 @@ function resizeElements(){
   const w = window.innerWidth;
   const h = window.innerHeight;
   captionEl.style.fontSize = (w*0.05)+'px';
-  captionEl.style.top = (h*0.45)+'px';
+  captionEl.style.top = (h*0.35)+'px'; /* ←変更 */
   phoneEl.style.fontSize = (w*0.04)+'px';
-  phoneEl.style.top = (h*0.35)+'px';
+  phoneEl.style.top = (h*0.25)+'px'; /* ←変更 */
   const qrImgs = document.querySelectorAll('#qrLinks img');
   qrImgs.forEach(img=>img.style.width = (w*0.06)+'px');
 }
