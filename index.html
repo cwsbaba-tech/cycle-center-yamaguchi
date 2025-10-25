@@ -8,6 +8,7 @@
 html,body{
   margin:0;
   height:100%;
+  width:100%;
   background:#000;
   font-family:"Noto Sans JP",sans-serif;
   overflow:hidden;
@@ -21,32 +22,6 @@ html,body{
   justify-content:center;
 }
 .hidden{display:none;}
-
-/* --- 🅰 通常モード --- */
-#modeA{background:#fff;color:#000;}
-header img{height:100px;margin-top:10px;}
-.buttons{
-  display:flex;
-  flex-direction:row;
-  gap:40px;
-  margin:auto;
-}
-.btn{
-  width:400px;
-  height:120px;
-  font-size:40px;
-  font-weight:bold;
-  border:none;
-  border-radius:20px;
-  cursor:pointer;
-  background:linear-gradient(180deg,#ffcc00,#ff9900);
-  box-shadow:0 6px 0 #cc8800;
-  transition:.2s;
-}
-.btn:active{
-  transform:translateY(4px);
-  box-shadow:0 2px 0 #cc8800;
-}
 
 /* --- 🅱 スライドショーモード --- */
 #modeB{background:#000;position:absolute;inset:0;}
@@ -67,6 +42,7 @@ header img{height:100px;margin-top:10px;}
 .slide:nth-child(4){animation-delay:60s;}
 .slide:nth-child(5){animation-delay:80s;}
 
+/* --- テキスト配置 --- */
 .caption{
   position:absolute;
   left:50%;
@@ -79,8 +55,10 @@ header img{height:100px;margin-top:10px;}
   border-radius:6px;
   font-size:60px;
   line-height:1.1;
-  top:45%;
+  top:40%;
   transition:opacity 1s;
+  width:90%;
+  max-width:1600px;
 }
 #phoneFooter{
   position:absolute;
@@ -91,6 +69,8 @@ header img{height:100px;margin-top:10px;}
   font-size:50px;
   font-weight:bold;
   text-shadow:0 0 10px rgba(0,0,0,0.7);
+  text-align:center;
+  width:100%;
 }
 
 /* --- QRリンク --- */
@@ -100,8 +80,9 @@ header img{height:100px;margin-top:10px;}
   left:50%;
   transform:translateX(-50%);
   display:flex;
-  gap:60px;
+  gap:80px;
   align-items:flex-end;
+  justify-content:center;
 }
 .qrItem{
   text-align:center;
@@ -130,14 +111,15 @@ header img{height:100px;margin-top:10px;}
 #menuButton{
   position:absolute;
   top:20px;
-  left:20px;
-  font-size:22px;
+  right:40px;
+  font-size:28px;
   background:rgba(255,255,255,0.85);
   border:none;
-  padding:10px 20px;
-  border-radius:8px;
+  padding:14px 26px;
+  border-radius:12px;
   cursor:pointer;
   z-index:1000;
+  font-weight:bold;
 }
 #menuOverlay{
   position:fixed;
@@ -152,9 +134,9 @@ header img{height:100px;margin-top:10px;}
 }
 #menuOverlay.hidden{display:none;}
 .menuBtn{
-  width:320px;
-  height:100px;
-  font-size:36px;
+  width:360px;
+  height:110px;
+  font-size:38px;
   font-weight:bold;
   color:#000;
   border:none;
@@ -169,8 +151,8 @@ header img{height:100px;margin-top:10px;}
   box-shadow:0 2px 0 #cc8800;
 }
 #closeMenu{
-  margin-top:20px;
-  font-size:30px;
+  margin-top:30px;
+  font-size:32px;
   color:#fff;
   cursor:pointer;
   text-decoration:underline;
@@ -204,55 +186,4 @@ header img{height:100px;margin-top:10px;}
       </a>
     </div>
     <div class="qrItem">
-      <a href="https://www.facebook.com/" target="_blank">
-        <img src="Facebook.png" alt="Facebook">
-        <div>Facebook</div>
-      </a>
-    </div>
-    <div class="qrItem">
-      <a href="https://cyclecenteryamaguchi.com/" target="_blank">
-        <img src="HP.png" alt="公式HP">
-        <div>公式HP</div>
-      </a>
-    </div>
-  </div>
-
-  <!-- 🆕 メーカー選択ボタン -->
-  <button id="menuButton">メーカー選択</button>
-</div>
-
-<!-- 🆕 メーカー選択メニュー -->
-<div id="menuOverlay" class="hidden">
-  <button class="menuBtn" onclick="window.open('https://www.giant-bicycles.com/jp','_blank')">GIANT</button>
-  <button class="menuBtn" onclick="window.open('https://cycle.panasonic.com/support/requestcatalog/','_blank')">パナソニック</button>
-  <button class="menuBtn" onclick="window.open('https://www.japan.bianchi.com/','_blank')">BIANCHI</button>
-  <div id="closeMenu" onclick="document.getElementById('menuOverlay').classList.add('hidden')">閉じる ✖</div>
-</div>
-
-<script>
-/* --- スライドキャプション --- */
-const captions = [
-  "ようこそ サイクルセンターヤマグチへ",
-  "創業100年 中野区の街の自転車屋",
-  "電動アシストからスポーツ車まで幅広く対応",
-  "修理・点検・カスタムもお任せください",
-  ""
-];
-let caption = document.getElementById('caption');
-let idx = 0;
-setInterval(()=>{
-  idx = (idx + 1) % captions.length;
-  caption.style.opacity = 0;
-  setTimeout(()=>{
-    caption.textContent = captions[idx];
-    caption.style.opacity = 1;
-  },1000);
-},20000);
-
-/* --- メニューボタン動作 --- */
-document.getElementById('menuButton').addEventListener('click',()=>{
-  document.getElementById('menuOverlay').classList.remove('hidden');
-});
-</script>
-</body>
-</html>
+      <a href
