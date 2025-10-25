@@ -126,36 +126,36 @@ header img{height:100px;margin-top:10px;}
   box-shadow:0 0 20px rgba(255,255,255,0.7);
 }
 
-/* --- 🆕 メーカー選択メニュー（スライドショー上で開く） --- */
+/* --- 🆕 メーカー選択メニュー --- */
 #menuOverlay{
-  position:absolute;
+  position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.6);
+  background:rgba(0,0,0,0.75);
   display:flex;
   justify-content:center;
   align-items:center;
   gap:60px;
-  transition:opacity 0.3s;
+  z-index:9999;
+  flex-wrap:wrap;
 }
 #menuOverlay.hidden{
-  opacity:0;
-  pointer-events:none;
+  display:none !important;
 }
 .menuButton{
-  width:300px;
-  height:100px;
-  font-size:36px;
+  width:380px;
+  height:120px;
+  font-size:42px;
   font-weight:bold;
   border:none;
-  border-radius:20px;
+  border-radius:24px;
   cursor:pointer;
   background:linear-gradient(180deg,#ffcc00,#ff9900);
-  box-shadow:0 6px 0 #cc8800;
+  box-shadow:0 8px 0 #cc8800;
   transition:.2s;
 }
 .menuButton:active{
   transform:translateY(4px);
-  box-shadow:0 2px 0 #cc8800;
+  box-shadow:0 4px 0 #cc8800;
 }
 </style>
 </head>
@@ -209,9 +209,52 @@ header img{height:100px;margin-top:10px;}
       </a>
     </div>
   </div>
+</div>
 
-  <!-- 🆕 メニューオーバーレイ -->
-  <div id="menuOverlay" class="hidden">
-    <button class="menuButton" onclick="window.open('https://www.giant-bicycles.com/jp','_blank')">GIANT</button>
-    <button class="menuButton" onclick="window.open('https://cycle.panasonic.com/support/requestcatalog/','_blank')">パナソニック</button>
-    <button clas
+<!-- 🆕 メニューオーバーレイ -->
+<div id="menuOverlay" class="hidden">
+  <button class="menuButton" onclick="window.open('https://www.giant-bicycles.com/jp','_blank')">GIANT</button>
+  <button class="menuButton" onclick="window.open('https://cycle.panasonic.com/support/requestcatalog/','_blank')">パナソニック</button>
+  <button class="menuButton" onclick="window.open('https://www.japan.bianchi.com/','_blank')">BIANCHI</button>
+</div>
+
+<script>
+let modeA = document.getElementById('modeA');
+let modeB = document.getElementById('modeB');
+let caption = document.getElementById('caption');
+let menuOverlay = document.getElementById('menuOverlay');
+
+const captions = [
+  "ようこそ サイクルセンターヤマグチへ",
+  "創業100年 中野区の街の自転車屋",
+  "電動アシストからスポーツ車まで幅広く対応",
+  "修理・点検・カスタムもお任せください",
+  ""
+];
+
+function startSlideshow(){
+  modeA.classList.add('hidden');
+  modeB.classList.remove('hidden');
+  caption.textContent = captions[0];
+  let idx = 0;
+  setInterval(()=>{
+    idx = (idx + 1) % captions.length;
+    caption.style.opacity = 0;
+    setTimeout(()=>{
+      caption.textContent = captions[idx];
+      caption.style.opacity = 1;
+    },1000);
+  },20000);
+}
+
+document.addEventListener('click',()=>{
+  if(modeA.classList.contains('hidden')){
+    // モードB中のクリック → メニュー表示切替
+    menuOverlay.classList.toggle('hidden');
+  }else{
+    startSlideshow();
+  }
+});
+</script>
+</body>
+</html>
