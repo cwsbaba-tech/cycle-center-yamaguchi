@@ -37,11 +37,11 @@ html, body {
   font-size: 2.8vw;
 }
 
-/* キャプション（QRのすぐ上まで上げる） */
+/* キャプション */
 .caption {
   position: absolute;
   left: 50%;
-  top: 25%; /* ← ここを下げていたのを上げた */
+  top: 25%; /* ← QRとのバランス最適化 */
   transform: translateX(-50%);
   color: #fff;
   font-weight: 700;
@@ -51,7 +51,7 @@ html, body {
   border-radius: 6px;
   transition: opacity 1s;
   font-size: 3.2vw;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 
 /* QRリンク */
@@ -106,10 +106,10 @@ html, body {
 
 <script>
 const slides = [
-  {img:'横長ロゴ.jpg', caption:'ようこそ サイクルセンターヤマグチへ'},
-  {img:'大正13年店舗.jpg', caption:'創業100年 中野区の街の自転車屋'},
-  {img:'店舗正面.jpg', caption:'電動アシストからスポーツ車まで幅広く対応'},
-  {img:'店舗斜め.JPG', caption:'修理・点検・カスタムもお任せください'},
+  {img:'横長ロゴ.jpg', caption:'ようこそ<br>サイクルセンターヤマグチへ'},
+  {img:'大正13年店舗.jpg', caption:'創業100年<br>中野区の街の自転車屋'},
+  {img:'店舗正面.jpg', caption:'電動アシストからスポーツ車まで<br>幅広く対応'},
+  {img:'店舗斜め.JPG', caption:'修理・点検・カスタムも<br>お任せください'},
   {img:'ピット.jpg', caption:''}
 ];
 
@@ -122,7 +122,7 @@ function showSlide(idx){
     el.style.opacity = (i===idx)? 1:0;
     el.style.backgroundImage = `url('${slides[i].img}')`;
   });
-  captionEl.textContent = slides[idx].caption;
+  captionEl.innerHTML = slides[idx].caption;
 }
 
 function nextSlide(){
