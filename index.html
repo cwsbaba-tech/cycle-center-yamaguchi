@@ -14,7 +14,7 @@ html, body {
   overflow: hidden;
 }
 
-/* 全体共通 */
+/* 共通 */
 .screen {
   position: absolute;
   inset: 0;
@@ -25,15 +25,9 @@ html, body {
 }
 .hidden { display: none; }
 
-/* 🅰 通常モード（カタログボタン） */
-#modeA {
-  background: #fff;
-  color: #000;
-}
-header img {
-  height: 140px;
-  margin-top: 30px;
-}
+/* 🅰 通常モード */
+#modeA { background: #fff; color: #000; }
+header img { height: 140px; margin-top: 30px; }
 .buttons {
   display: flex;
   flex-direction: row;
@@ -83,7 +77,7 @@ header img {
 .slide:nth-child(4) { animation-delay: 60s; }
 .slide:nth-child(5) { animation-delay: 80s; }
 
-/* テキスト・電話番号配置 */
+/* テキスト */
 .caption {
   position: absolute;
   top: 50%;
@@ -112,7 +106,7 @@ header img {
   text-shadow: 0 0 15px rgba(0,0,0,0.8);
 }
 
-/* --- QRリンク --- */
+/* QRリンク */
 #qrLinks {
   position: absolute;
   bottom: 40px;
@@ -144,8 +138,6 @@ header img {
   transform: scale(1.1);
   box-shadow: 0 0 25px rgba(255,255,255,0.8);
 }
-
-/* 1920x1080想定のレスポンシブ微調整 */
 @media (max-width: 1400px) {
   .caption { font-size: 48px; }
   #phoneFooter { font-size: 48px; bottom: 140px; }
@@ -177,7 +169,6 @@ header img {
   <div id="caption" class="caption">ようこそ サイクルセンターヤマグチへ</div>
   <div id="phoneFooter">☎ 03-3372-6530</div>
 
-  <!-- QRリンク -->
   <div id="qrLinks">
     <div class="qrItem">
       <a href="https://www.instagram.com/" target="_blank">
@@ -218,12 +209,16 @@ const captions = [
   ""
 ];
 
+let slideTimer = null;
+
+// ✅ スライドショー開始
 function startSlideshow() {
+  if (slideTimer) clearInterval(slideTimer);
   modeA.classList.add('hidden');
   modeB.classList.remove('hidden');
   caption.textContent = captions[0];
   let idx = 0;
-  setInterval(() => {
+  slideTimer = setInterval(() => {
     idx = (idx + 1) % captions.length;
     caption.style.opacity = 0;
     setTimeout(() => {
@@ -233,10 +228,24 @@ function startSlideshow() {
   }, 20000);
 }
 
+// ✅ フルスクリーン起動関数
+function enterFullscreen() {
+  const el = document.documentElement;
+  if (el.requestFullscreen) el.requestFullscreen();
+  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  else if (el.msRequestFullscreen) el.msRequestFullscreen();
+}
+
+// ✅ クリック動作
 document.addEventListener('click', () => {
+  // まずフルスクリーンを試行
+  enterFullscreen();
+
+  // モード切り替え
   if (modeA.classList.contains('hidden')) {
     modeA.classList.remove('hidden');
     modeB.classList.add('hidden');
+    if (slideTimer) clearInterval(slideTimer);
   } else {
     startSlideshow();
   }
