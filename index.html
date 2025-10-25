@@ -8,10 +8,13 @@
 html, body {
   margin: 0;
   height: 100%;
+  width: 100%;
   background: #000;
   font-family: "Noto Sans JP", sans-serif;
   overflow: hidden;
 }
+
+/* 全体共通 */
 .screen {
   position: absolute;
   inset: 0;
@@ -22,22 +25,30 @@ html, body {
 }
 .hidden { display: none; }
 
-/* --- 🅰 通常モード --- */
-#modeA { background: #fff; color: #000; }
-header img { height: 100px; margin-top: 10px; }
+/* 🅰 通常モード（カタログボタン） */
+#modeA {
+  background: #fff;
+  color: #000;
+}
+header img {
+  height: 140px;
+  margin-top: 30px;
+}
 .buttons {
   display: flex;
   flex-direction: row;
-  gap: 40px;
-  margin: auto;
+  gap: 60px;
+  margin-top: 60px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .btn {
-  width: 400px;
-  height: 120px;
-  font-size: 40px;
+  width: 460px;
+  height: 150px;
+  font-size: 48px;
   font-weight: bold;
   border: none;
-  border-radius: 20px;
+  border-radius: 25px;
   cursor: pointer;
   background: linear-gradient(180deg, #ffcc00, #ff9900);
   box-shadow: 0 6px 0 #cc8800;
@@ -48,8 +59,13 @@ header img { height: 100px; margin-top: 10px; }
   box-shadow: 0 2px 0 #cc8800;
 }
 
-/* --- 🅱 スライドショーモード --- */
-#modeB { background: #000; position: absolute; inset: 0; }
+/* 🅱 スライドショーモード */
+#modeB {
+  background: #000;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
 .slide {
   position: absolute; inset: 0;
   background-size: cover;
@@ -67,46 +83,49 @@ header img { height: 100px; margin-top: 10px; }
 .slide:nth-child(4) { animation-delay: 60s; }
 .slide:nth-child(5) { animation-delay: 80s; }
 
+/* テキスト・電話番号配置 */
 .caption {
   position: absolute;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   color: #fff;
   font-weight: 700;
   text-align: center;
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
-  padding: 10px 30px;
-  border-radius: 6px;
-  font-size: 60px;
-  line-height: 1.1;
-  top: 45%;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.7);
+  padding: 20px 40px;
+  border-radius: 10px;
+  font-size: 64px;
+  line-height: 1.2;
+  width: 90%;
+  max-width: 1800px;
   transition: opacity 1s;
 }
 #phoneFooter {
   position: absolute;
-  bottom: 320px;
+  bottom: 180px;
   left: 50%;
   transform: translateX(-50%);
   color: #fff;
-  font-size: 50px;
+  font-size: 60px;
   font-weight: bold;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 0 15px rgba(0,0,0,0.8);
 }
 
 /* --- QRリンク --- */
 #qrLinks {
   position: absolute;
-  bottom: 20px;
+  bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 60px;
+  gap: 100px;
   align-items: flex-end;
 }
 .qrItem {
   text-align: center;
   color: #fff;
-  font-size: 24px;
+  font-size: 28px;
   white-space: nowrap;
 }
 .qrItem a {
@@ -114,16 +133,24 @@ header img { height: 100px; margin-top: 10px; }
   color: inherit;
 }
 .qrItem img {
-  width: 90px;
-  height: 90px;
+  width: 130px;
+  height: 130px;
   display: block;
   margin: auto;
-  border-radius: 12px;
+  border-radius: 16px;
   transition: transform .25s, box-shadow .25s;
 }
 .qrItem img:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 25px rgba(255,255,255,0.8);
+}
+
+/* 1920x1080想定のレスポンシブ微調整 */
+@media (max-width: 1400px) {
+  .caption { font-size: 48px; }
+  #phoneFooter { font-size: 48px; bottom: 140px; }
+  .qrItem img { width: 100px; height: 100px; }
+  #qrLinks { gap: 60px; }
 }
 </style>
 </head>
@@ -180,7 +207,6 @@ header img { height: 100px; margin-top: 10px; }
 </div>
 
 <script>
-let current = 0;
 let modeA = document.getElementById('modeA');
 let modeB = document.getElementById('modeB');
 let caption = document.getElementById('caption');
