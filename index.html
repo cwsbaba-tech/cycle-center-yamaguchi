@@ -155,7 +155,7 @@ html, body {
     <div class="qrItem"><a href="https://cyclecenteryamaguchi.com/" target="_blank"><img src="HP.png"><div>公式HP</div></a></div>
   </div>
 
-  <div id="clickToFullscreen">タップで全画面表示</div>
+  <div id="clickToFullscreen">タップでメニュー表示</div>
 </div>
 
 <script>
@@ -163,6 +163,7 @@ const slideScreen = document.getElementById("slideScreen");
 const menuScreen  = document.getElementById("menuScreen");
 const slides = document.querySelectorAll(".slide");
 const caption = document.getElementById("caption");
+const fullscreenText = document.getElementById("clickToFullscreen");
 
 const captions = [
   "ようこそ<br>サイクルセンターヤマグチへ",
@@ -200,15 +201,16 @@ function openFullscreen(){
 /* ==== スライド画面クリック → メニュー表示 ==== */
 slideScreen.addEventListener("click", ()=>{
   openFullscreen();
-  document.getElementById("clickToFullscreen").style.display="none";
-  // スライドショー停止してメニューに切り替え
+  fullscreenText.style.display = "none";
   clearInterval(slideTimer);
   slideScreen.classList.add("hidden");
   menuScreen.classList.remove("hidden");
 });
 
-/* ==== メニュークリック → スライドに戻す ==== */
-menuScreen.addEventListener("click", ()=>{
+/* ==== メニュー画面クリック → スライドに戻す ==== */
+menuScreen.addEventListener("click", (e)=>{
+  // ボタン自体をクリックした場合はスライドに戻らない
+  if(e.target.classList.contains("btn")) return;
   menuScreen.classList.add("hidden");
   slideScreen.classList.remove("hidden");
   startSlideshow();
