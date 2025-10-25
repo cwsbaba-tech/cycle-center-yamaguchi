@@ -22,10 +22,36 @@ html,body{
 }
 .hidden{display:none;}
 
-/* --- スライド --- */
+/* --- 🅰 通常モード --- */
+#modeA{background:#fff;color:#000;}
+header img{height:100px;margin-top:10px;}
+.buttons{
+  display:flex;
+  flex-direction:row;
+  gap:40px;
+  margin:auto;
+}
+.btn{
+  width:400px;
+  height:120px;
+  font-size:40px;
+  font-weight:bold;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+  background:linear-gradient(180deg,#ffcc00,#ff9900);
+  box-shadow:0 6px 0 #cc8800;
+  transition:.2s;
+}
+.btn:active{
+  transform:translateY(4px);
+  box-shadow:0 2px 0 #cc8800;
+}
+
+/* --- 🅱 スライドショーモード --- */
+#modeB{background:#000;position:absolute;inset:0;}
 .slide{
-  position:absolute;
-  inset:0;
+  position:absolute;inset:0;
   background-size:cover;
   background-position:center center;
   opacity:0;
@@ -41,7 +67,6 @@ html,body{
 .slide:nth-child(4){animation-delay:60s;}
 .slide:nth-child(5){animation-delay:80s;}
 
-/* --- テキストと電話番号 --- */
 .caption{
   position:absolute;
   left:50%;
@@ -101,41 +126,61 @@ html,body{
   box-shadow:0 0 20px rgba(255,255,255,0.7);
 }
 
-/* --- 🆕 メーカー選択メニュー --- */
+/* --- 🆕 メーカー選択ボタンとメニュー --- */
+#menuButton{
+  position:absolute;
+  top:20px;
+  left:20px;
+  font-size:22px;
+  background:rgba(255,255,255,0.85);
+  border:none;
+  padding:10px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  z-index:1000;
+}
 #menuOverlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.75);
+  background:rgba(0,0,0,0.7);
   display:flex;
+  flex-direction:column;
   justify-content:center;
   align-items:center;
-  gap:50px;
-  z-index:9999;
-  flex-wrap:wrap;
+  gap:40px;
+  z-index:2000;
 }
 #menuOverlay.hidden{display:none;}
-.menuButton{
-  width:340px;
+.menuBtn{
+  width:320px;
   height:100px;
   font-size:36px;
   font-weight:bold;
+  color:#000;
   border:none;
   border-radius:20px;
-  cursor:pointer;
   background:linear-gradient(180deg,#ffcc00,#ff9900);
   box-shadow:0 6px 0 #cc8800;
+  cursor:pointer;
   transition:.2s;
 }
-.menuButton:active{
+.menuBtn:active{
   transform:translateY(4px);
   box-shadow:0 2px 0 #cc8800;
+}
+#closeMenu{
+  margin-top:20px;
+  font-size:30px;
+  color:#fff;
+  cursor:pointer;
+  text-decoration:underline;
 }
 </style>
 </head>
 <body>
 
-<!-- スライドショー -->
-<div class="screen" id="slideshow">
+<!-- 🅱 スライドショーモード -->
+<div class="screen" id="modeB">
   <div class="slide" style="background-image:url('横長ロゴ.jpg');"></div>
   <div class="slide" style="background-image:url('大正13年店舗.jpg');"></div>
   <div class="slide" style="background-image:url('店舗正面.jpg');"></div>
@@ -171,16 +216,21 @@ html,body{
       </a>
     </div>
   </div>
+
+  <!-- 🆕 メーカー選択ボタン -->
+  <button id="menuButton">メーカー選択</button>
 </div>
 
-<!-- 🆕 メニューオーバーレイ -->
+<!-- 🆕 メーカー選択メニュー -->
 <div id="menuOverlay" class="hidden">
-  <button class="menuButton" onclick="window.open('https://www.giant-bicycles.com/jp','_blank')">GIANT</button>
-  <button class="menuButton" onclick="window.open('https://cycle.panasonic.com/support/requestcatalog/','_blank')">パナソニック</button>
-  <button class="menuButton" onclick="window.open('https://www.japan.bianchi.com/','_blank')">BIANCHI</button>
+  <button class="menuBtn" onclick="window.open('https://www.giant-bicycles.com/jp','_blank')">GIANT</button>
+  <button class="menuBtn" onclick="window.open('https://cycle.panasonic.com/support/requestcatalog/','_blank')">パナソニック</button>
+  <button class="menuBtn" onclick="window.open('https://www.japan.bianchi.com/','_blank')">BIANCHI</button>
+  <div id="closeMenu" onclick="document.getElementById('menuOverlay').classList.add('hidden')">閉じる ✖</div>
 </div>
 
 <script>
+/* --- スライドキャプション --- */
 const captions = [
   "ようこそ サイクルセンターヤマグチへ",
   "創業100年 中野区の街の自転車屋",
@@ -199,10 +249,9 @@ setInterval(()=>{
   },1000);
 },20000);
 
-/* 🆕 タップでメニュー表示切替 */
-document.addEventListener('click',()=>{
-  const menu = document.getElementById('menuOverlay');
-  menu.classList.toggle('hidden');
+/* --- メニューボタン動作 --- */
+document.getElementById('menuButton').addEventListener('click',()=>{
+  document.getElementById('menuOverlay').classList.remove('hidden');
 });
 </script>
 </body>
