@@ -2,82 +2,123 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CYCLE CENTER YAMAGUCHI</title>
 <style>
 html, body {
   margin: 0;
   height: 100%;
+  width: 100%;
   background: #000;
   font-family: "Noto Sans JP", sans-serif;
   overflow: hidden;
 }
-.screen { position: relative; width: 100%; height: 100%; cursor: pointer; }
 
-/* スライド画像 */
+/* 共通レイアウト */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.hidden { display: none; }
+
+/* === 🅰 メニュー画面 === */
+#menuScreen {
+  background: #fff;
+  color: #000;
+}
+#menuScreen header img {
+  height: 140px;
+  margin-top: 30px;
+}
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 60px;
+  margin-top: 60px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.btn {
+  width: 460px;
+  height: 150px;
+  font-size: 48px;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  background: linear-gradient(180deg, #ffcc00, #ff9900);
+  box-shadow: 0 6px 0 #cc8800;
+  transition: .2s;
+}
+.btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #cc8800;
+}
+
+/* === 🅱 スライドショー画面 === */
+#slideScreen {
+  background: #000;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
 .slide {
   position: absolute;
-  top:0; left:0; width:100%; height:100%;
+  inset: 0;
   background-size: cover;
-  background-position: center;
+  background-position: center center;
   opacity: 0;
-  transition: opacity 1s;
+  transition: opacity 1.5s ease-in-out;
 }
-
-/* 電話番号（画面上部） */
-#phoneFooter {
-  position: absolute;
-  left: 50%;
-  top: 1%;
-  transform: translateX(-50%);
-  color: #fff;
-  font-weight: bold;
-  text-shadow: 0 0 10px rgba(0,0,0,0.7);
-  transition: opacity 1s;
-  font-size: 2.8vw;
+.slide.active {
+  opacity: 1;
 }
-
-/* キャプション（中央） */
 .caption {
   position: absolute;
-  left: 50%;
   top: 25%;
-  transform: translateX(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
   color: #fff;
   font-weight: 700;
   text-align: center;
   text-shadow: 0 4px 12px rgba(0,0,0,0.7);
-  padding: 1% 2%;
-  border-radius: 6px;
-  transition: opacity 1s;
   font-size: 3.2vw;
-  line-height: 1.4;
-  white-space: normal;
-  word-break: keep-all;
+  line-height: 1.3;
 }
-
-/* QRリンク */
+#phoneFooter {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 3vw;
+  font-weight: bold;
+  text-shadow: 0 0 15px rgba(0,0,0,0.8);
+}
 #qrLinks {
   position: absolute;
-  bottom: 1%;
+  bottom: 2%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 2vw;
+  gap: 3vw;
 }
-.qrItem { text-align: center; color: #fff; font-size: 1vw; }
-.qrItem img { width: 5.5vw; height: auto; border-radius: 12px; transition: transform .25s; }
-.qrItem img:hover { transform: scale(1.1); }
-
-/* フルスクリーン案内 */
+.qrItem { text-align: center; color: #fff; font-size: 1.2vw; }
+.qrItem img {
+  width: 6vw;
+  border-radius: 12px;
+}
 #clickToFullscreen {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   color: white;
-  font-size: 2.5vw;
-  text-align: center;
-  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+  font-size: 2vw;
   background: rgba(0,0,0,0.4);
   padding: 20px 40px;
   border-radius: 20px;
@@ -86,15 +127,26 @@ html, body {
 </head>
 <body>
 
-<div class="screen" id="slideshow">
-  <div class="slide" id="slide0"></div>
-  <div class="slide" id="slide1"></div>
-  <div class="slide" id="slide2"></div>
-  <div class="slide" id="slide3"></div>
-  <div class="slide" id="slide4"></div>
+<!-- 🅰 メニュー画面 -->
+<div class="screen hidden" id="menuScreen">
+  <header><img src="横長ロゴ.jpg" alt="logo"></header>
+  <div class="buttons">
+    <button class="btn" onclick="window.open('https://www.giant-bicycles.com/jp','_blank')">GIANT</button>
+    <button class="btn" onclick="window.open('https://cycle.panasonic.com/support/requestcatalog/','_blank')">パナソニック</button>
+    <button class="btn" onclick="window.open('https://www.japan.bianchi.com/','_blank')">BIANCHI</button>
+  </div>
+</div>
 
+<!-- 🅱 スライドショー画面 -->
+<div class="screen" id="slideScreen">
+  <div class="slide" style="background-image:url('横長ロゴ.jpg')"></div>
+  <div class="slide" style="background-image:url('大正13年店舗.jpg')"></div>
+  <div class="slide" style="background-image:url('店舗正面.jpg')"></div>
+  <div class="slide" style="background-image:url('店舗斜め.JPG')"></div>
+  <div class="slide" style="background-image:url('ピット.jpg')"></div>
+
+  <div id="caption" class="caption">ようこそ<br>サイクルセンターヤマグチへ</div>
   <div id="phoneFooter">☎ 03-3372-6530</div>
-  <div id="caption" class="caption"></div>
 
   <div id="qrLinks">
     <div class="qrItem"><a href="https://www.instagram.com/" target="_blank"><img src="Instagram.jpg"><div>Instagram</div></a></div>
@@ -107,54 +159,61 @@ html, body {
 </div>
 
 <script>
-const slides = [
-  {img:'横長ロゴ.jpg', caption:'ようこそ<br>サイクルセンターヤマグチへ'},
-  {img:'大正13年店舗.jpg', caption:'創業100年<br>中野区の街の自転車屋'},
-  {img:'店舗正面.jpg', caption:'<span style="white-space:nowrap;">電動アシストからスポーツ車まで</span><br>幅広く対応'},
-  {img:'店舗斜め.JPG', caption:'修理・点検・カスタムも<br>お任せください'},
-  {img:'ピット.jpg', caption:''}
+const slideScreen = document.getElementById("slideScreen");
+const menuScreen  = document.getElementById("menuScreen");
+const slides = document.querySelectorAll(".slide");
+const caption = document.getElementById("caption");
+
+const captions = [
+  "ようこそ<br>サイクルセンターヤマグチへ",
+  "創業100年<br>中野区の街の自転車屋",
+  "電動アシストからスポーツ車まで<br>幅広く対応",
+  "修理・点検・カスタムも<br>お任せください",
+  ""
 ];
 
 let current = 0;
-const slideElements = slides.map((_,i)=>document.getElementById('slide'+i));
-const captionEl = document.getElementById('caption');
+let slideTimer = null;
 
-function showSlide(idx){
-  slideElements.forEach((el,i)=>{
-    el.style.opacity = (i===idx)? 1:0;
-    el.style.backgroundImage = `url('${slides[i].img}')`;
-  });
-  captionEl.innerHTML = slides[idx].caption;
+function showSlide(i){
+  slides.forEach((s,idx)=>s.classList.toggle("active", idx===i));
+  caption.innerHTML = captions[i];
 }
 
-function nextSlide(){
-  current = (current + 1) % slides.length;
-  showSlide(current);
+function startSlideshow(){
+  showSlide(0);
+  if(slideTimer) clearInterval(slideTimer);
+  slideTimer = setInterval(()=>{
+    current = (current + 1) % slides.length;
+    showSlide(current);
+  },20000);
+}
+startSlideshow();
+
+function openFullscreen(){
+  const el = document.documentElement;
+  if(el.requestFullscreen){ el.requestFullscreen(); }
+  else if(el.webkitRequestFullscreen){ el.webkitRequestFullscreen(); }
+  else if(el.msRequestFullscreen){ el.msRequestFullscreen(); }
 }
 
-showSlide(current);
-setInterval(nextSlide, 20000);
-
-/* ==== Chrome用：クリックでフルスクリーン ==== */
-const slideshow = document.getElementById('slideshow');
-const fullscreenText = document.getElementById('clickToFullscreen');
-
-slideshow.addEventListener('click', () => {
+/* ==== スライド画面クリック → メニュー表示 ==== */
+slideScreen.addEventListener("click", ()=>{
   openFullscreen();
-  fullscreenText.style.display = 'none';
+  document.getElementById("clickToFullscreen").style.display="none";
+  // スライドショー停止してメニューに切り替え
+  clearInterval(slideTimer);
+  slideScreen.classList.add("hidden");
+  menuScreen.classList.remove("hidden");
 });
 
-function openFullscreen() {
-  const el = document.documentElement;
-  if (el.requestFullscreen) {
-    el.requestFullscreen();
-  } else if (el.webkitRequestFullscreen) {
-    el.webkitRequestFullscreen();
-  } else if (el.msRequestFullscreen) {
-    el.msRequestFullscreen();
-  }
-}
+/* ==== メニュークリック → スライドに戻す ==== */
+menuScreen.addEventListener("click", ()=>{
+  menuScreen.classList.add("hidden");
+  slideScreen.classList.remove("hidden");
+  startSlideshow();
+});
 </script>
 
 </body>
-</h
+</html>
