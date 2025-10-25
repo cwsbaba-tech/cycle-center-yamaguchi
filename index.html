@@ -24,11 +24,11 @@ html, body {
   transition: opacity 1s;
 }
 
-/* 電話番号（画面最上部に配置） */
+/* 電話番号（画面最上部） */
 #phoneFooter {
   position: absolute;
   left: 50%;
-  top: 1%; /* ← 上から約1cmの位置（画面高さの1%） */
+  top: 1%;
   transform: translateX(-50%);
   color: #fff;
   font-weight: bold;
@@ -37,11 +37,11 @@ html, body {
   font-size: 2.8vw;
 }
 
-/* キャプション（説明文） */
+/* キャプション（QRのすぐ上まで上げる） */
 .caption {
   position: absolute;
   left: 50%;
-  top: 60%; /* ← QRのすぐ上 */
+  top: 52%; /* ← ここを下げていたのを上げた */
   transform: translateX(-50%);
   color: #fff;
   font-weight: 700;
@@ -51,6 +51,7 @@ html, body {
   border-radius: 6px;
   transition: opacity 1s;
   font-size: 3.2vw;
+  line-height: 1.3;
 }
 
 /* QRリンク */
