@@ -22,36 +22,10 @@ html,body{
 }
 .hidden{display:none;}
 
-/* --- 🅰 通常モード --- */
-#modeA{background:#fff;color:#000;}
-header img{height:100px;margin-top:10px;}
-.buttons{
-  display:flex;
-  flex-direction:row;
-  gap:40px;
-  margin:auto;
-}
-.btn{
-  width:400px;
-  height:120px;
-  font-size:40px;
-  font-weight:bold;
-  border:none;
-  border-radius:20px;
-  cursor:pointer;
-  background:linear-gradient(180deg,#ffcc00,#ff9900);
-  box-shadow:0 6px 0 #cc8800;
-  transition:.2s;
-}
-.btn:active{
-  transform:translateY(4px);
-  box-shadow:0 2px 0 #cc8800;
-}
-
-/* --- 🅱 スライドショーモード --- */
-#modeB{background:#000;position:absolute;inset:0;}
+/* --- スライド --- */
 .slide{
-  position:absolute;inset:0;
+  position:absolute;
+  inset:0;
   background-size:cover;
   background-position:center center;
   opacity:0;
@@ -67,6 +41,7 @@ header img{height:100px;margin-top:10px;}
 .slide:nth-child(4){animation-delay:60s;}
 .slide:nth-child(5){animation-delay:80s;}
 
+/* --- テキストと電話番号 --- */
 .caption{
   position:absolute;
   left:50%;
@@ -84,7 +59,7 @@ header img{height:100px;margin-top:10px;}
 }
 #phoneFooter{
   position:absolute;
-  bottom:320px;
+  top:1cm;
   left:50%;
   transform:translateX(-50%);
   color:#fff;
@@ -134,45 +109,33 @@ header img{height:100px;margin-top:10px;}
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:60px;
+  gap:50px;
   z-index:9999;
   flex-wrap:wrap;
 }
-#menuOverlay.hidden{
-  display:none !important;
-}
+#menuOverlay.hidden{display:none;}
 .menuButton{
-  width:380px;
-  height:120px;
-  font-size:42px;
+  width:340px;
+  height:100px;
+  font-size:36px;
   font-weight:bold;
   border:none;
-  border-radius:24px;
+  border-radius:20px;
   cursor:pointer;
   background:linear-gradient(180deg,#ffcc00,#ff9900);
-  box-shadow:0 8px 0 #cc8800;
+  box-shadow:0 6px 0 #cc8800;
   transition:.2s;
 }
 .menuButton:active{
   transform:translateY(4px);
-  box-shadow:0 4px 0 #cc8800;
+  box-shadow:0 2px 0 #cc8800;
 }
 </style>
 </head>
 <body>
 
-<!-- 🅰 通常モード -->
-<div class="screen" id="modeA">
-  <header><img src="横長ロゴ.jpg" alt="logo"></header>
-  <div class="buttons">
-    <button class="btn" onclick="window.open('https://www.giant-bicycles.com/jp','_blank')">GIANT</button>
-    <button class="btn" onclick="window.open('https://cycle.panasonic.com/support/requestcatalog/','_blank')">パナソニック</button>
-    <button class="btn" onclick="window.open('https://www.japan.bianchi.com/','_blank')">BIANCHI</button>
-  </div>
-</div>
-
-<!-- 🅱 スライドショーモード -->
-<div class="screen hidden" id="modeB">
+<!-- スライドショー -->
+<div class="screen" id="slideshow">
   <div class="slide" style="background-image:url('横長ロゴ.jpg');"></div>
   <div class="slide" style="background-image:url('大正13年店舗.jpg');"></div>
   <div class="slide" style="background-image:url('店舗正面.jpg');"></div>
@@ -182,7 +145,6 @@ header img{height:100px;margin-top:10px;}
   <div id="caption" class="caption">ようこそ サイクルセンターヤマグチへ</div>
   <div id="phoneFooter">☎ 03-3372-6530</div>
 
-  <!-- QRリンク -->
   <div id="qrLinks">
     <div class="qrItem">
       <a href="https://www.instagram.com/" target="_blank">
@@ -219,11 +181,6 @@ header img{height:100px;margin-top:10px;}
 </div>
 
 <script>
-let modeA = document.getElementById('modeA');
-let modeB = document.getElementById('modeB');
-let caption = document.getElementById('caption');
-let menuOverlay = document.getElementById('menuOverlay');
-
 const captions = [
   "ようこそ サイクルセンターヤマグチへ",
   "創業100年 中野区の街の自転車屋",
@@ -231,29 +188,21 @@ const captions = [
   "修理・点検・カスタムもお任せください",
   ""
 ];
+let caption = document.getElementById('caption');
+let idx = 0;
+setInterval(()=>{
+  idx = (idx + 1) % captions.length;
+  caption.style.opacity = 0;
+  setTimeout(()=>{
+    caption.textContent = captions[idx];
+    caption.style.opacity = 1;
+  },1000);
+},20000);
 
-function startSlideshow(){
-  modeA.classList.add('hidden');
-  modeB.classList.remove('hidden');
-  caption.textContent = captions[0];
-  let idx = 0;
-  setInterval(()=>{
-    idx = (idx + 1) % captions.length;
-    caption.style.opacity = 0;
-    setTimeout(()=>{
-      caption.textContent = captions[idx];
-      caption.style.opacity = 1;
-    },1000);
-  },20000);
-}
-
+/* 🆕 タップでメニュー表示切替 */
 document.addEventListener('click',()=>{
-  if(modeA.classList.contains('hidden')){
-    // モードB中のクリック → メニュー表示切替
-    menuOverlay.classList.toggle('hidden');
-  }else{
-    startSlideshow();
-  }
+  const menu = document.getElementById('menuOverlay');
+  menu.classList.toggle('hidden');
 });
 </script>
 </body>
