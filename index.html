@@ -14,7 +14,7 @@ html, body {
   overflow: hidden;
 }
 
-/* 共通 */
+/* 共通レイアウト */
 .screen {
   position: absolute;
   inset: 0;
@@ -25,7 +25,7 @@ html, body {
 }
 .hidden { display: none; }
 
-/* 🅰 通常モード */
+/* --- 🅰 通常モード --- */
 #modeA { background: #fff; color: #000; }
 header img { height: 140px; margin-top: 30px; }
 .buttons {
@@ -53,7 +53,7 @@ header img { height: 140px; margin-top: 30px; }
   box-shadow: 0 2px 0 #cc8800;
 }
 
-/* 🅱 スライドショーモード */
+/* --- 🅱 スライドショーモード --- */
 #modeB {
   background: #000;
   position: absolute;
@@ -61,23 +61,18 @@ header img { height: 140px; margin-top: 30px; }
   overflow: hidden;
 }
 .slide {
-  position: absolute; inset: 0;
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center center;
   opacity: 0;
-  animation: fade 100s infinite;
+  transition: opacity 1.5s ease-in-out;
 }
-@keyframes fade {
-  0%, 20%, 100% { opacity: 0; }
-  5%, 15% { opacity: 1; }
+.slide.active {
+  opacity: 1;
 }
-.slide:nth-child(1) { animation-delay: 0s; }
-.slide:nth-child(2) { animation-delay: 20s; }
-.slide:nth-child(3) { animation-delay: 40s; }
-.slide:nth-child(4) { animation-delay: 60s; }
-.slide:nth-child(5) { animation-delay: 80s; }
 
-/* テキスト */
+/* --- テキストと電話番号 --- */
 .caption {
   position: absolute;
   top: 50%;
@@ -106,7 +101,7 @@ header img { height: 140px; margin-top: 30px; }
   text-shadow: 0 0 15px rgba(0,0,0,0.8);
 }
 
-/* QRリンク */
+/* --- QRリンク --- */
 #qrLinks {
   position: absolute;
   bottom: 40px;
@@ -198,9 +193,10 @@ header img { height: 140px; margin-top: 30px; }
 </div>
 
 <script>
-let modeA = document.getElementById('modeA');
-let modeB = document.getElementById('modeB');
-let caption = document.getElementById('caption');
+const modeA = document.getElementById('modeA');
+const modeB = document.getElementById('modeB');
+const caption = document.getElementById('caption');
+const slides = document.querySelectorAll('.slide');
 const captions = [
   "ようこそ サイクルセンターヤマグチへ",
   "創業100年 中野区の街の自転車屋",
@@ -208,27 +204,10 @@ const captions = [
   "修理・点検・カスタムもお任せください",
   ""
 ];
-
+let currentIndex = 0;
 let slideTimer = null;
 
-// ✅ スライドショー開始
-function startSlideshow() {
-  if (slideTimer) clearInterval(slideTimer);
-  modeA.classList.add('hidden');
-  modeB.classList.remove('hidden');
-  caption.textContent = captions[0];
-  let idx = 0;
-  slideTimer = setInterval(() => {
-    idx = (idx + 1) % captions.length;
-    caption.style.opacity = 0;
-    setTimeout(() => {
-      caption.textContent = captions[idx];
-      caption.style.opacity = 1;
-    }, 1000);
-  }, 20000);
-}
-
-// ✅ フルスクリーン起動関数
+// ---- フルスクリーン起動 ----
 function enterFullscreen() {
   const el = document.documentElement;
   if (el.requestFullscreen) el.requestFullscreen();
@@ -236,17 +215,41 @@ function enterFullscreen() {
   else if (el.msRequestFullscreen) el.msRequestFullscreen();
 }
 
-// ✅ クリック動作
-document.addEventListener('click', () => {
-  // まずフルスクリーンを試行
-  enterFullscreen();
+// ---- スライドショー開始 ----
+function startSlideshow() {
+  modeA.classList.add('hidden');
+  modeB.classList.remove('hidden');
 
-  // モード切り替え
+  // 初期スライドを表示
+  slides.forEach(s => s.classList.remove('active'));
+  slides[0].classList.add('active');
+  caption.textContent = captions[0];
+
+  if (slideTimer) clearInterval(slideTimer);
+  slideTimer = setInterval(() => {
+    slides[currentIndex].classList.remove('active');
+    currentIndex = (currentIndex + 1) % slides.length;
+    slides[currentIndex].classList.add('active');
+
+    const text = captions[currentIndex % captions.length];
+    caption.style.opacity = 0;
+    setTimeout(() => {
+      caption.textContent = text;
+      caption.style.opacity = 1;
+    }, 500);
+  }, 20000);
+}
+
+// ---- クリックイベント ----
+document.addEventListener('click', () => {
+  enterFullscreen();
   if (modeA.classList.contains('hidden')) {
+    // 戻す
     modeA.classList.remove('hidden');
     modeB.classList.add('hidden');
-    if (slideTimer) clearInterval(slideTimer);
+    clearInterval(slideTimer);
   } else {
+    // スライド開始
     startSlideshow();
   }
 });
