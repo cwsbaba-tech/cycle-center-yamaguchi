@@ -12,36 +12,42 @@ html, body {
   font-family: "Noto Sans JP", sans-serif;
   overflow: hidden;
 }
-.screen { position: relative; width: 100%; height: 100%; cursor: pointer; }
+.screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
 
-/* スライド画像 */
+/* --- スライド画像 --- */
 .slide {
   position: absolute;
-  top:0; left:0; width:100%; height:100%;
+  top:0; left:0;
+  width:100%; height:100%;
   background-size: cover;
   background-position: center;
   opacity: 0;
-  transition: opacity 1s;
+  transition: opacity 1.2s ease-in-out;
 }
 
-/* 電話番号（画面最上部） */
+/* --- 電話番号（上部中央） --- */
 #phoneFooter {
   position: absolute;
   left: 50%;
-  top: 1%;
+  top: 2%;
   transform: translateX(-50%);
   color: #fff;
   font-weight: bold;
-  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+  text-shadow: 0 0 15px rgba(0,0,0,0.7);
   transition: opacity 1s;
-  font-size: 2.8vw;
+  font-size: 2.4vw;
 }
 
-/* キャプション */
+/* --- キャプション（中央） --- */
 .caption {
   position: absolute;
   left: 50%;
-  top: 25%;
+  top: 30%;
   transform: translateX(-50%);
   color: #fff;
   font-weight: 700;
@@ -50,35 +56,46 @@ html, body {
   padding: 1% 2%;
   border-radius: 6px;
   transition: opacity 1s;
-  font-size: 3.2vw;
-  line-height: 1.4;
+  font-size: 3vw;
+  line-height: 1.5;
   white-space: normal;
-  word-break: keep-all;
 }
 
-/* QRリンク */
+/* --- QRリンク --- */
 #qrLinks {
   position: absolute;
-  bottom: 1%;
+  bottom: 2%;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 2vw;
+  gap: 3vw;
 }
-.qrItem { text-align: center; color: #fff; font-size: 1vw; }
-.qrItem img { width: 5.5vw; height: auto; border-radius: 12px; transition: transform .25s; }
-.qrItem img:hover { transform: scale(1.1); }
+.qrItem {
+  text-align: center;
+  color: #fff;
+  font-size: 1.1vw;
+  font-weight: bold;
+}
+.qrItem img {
+  width: 4.5vw;
+  height: auto;
+  border-radius: 10px;
+  transition: transform .25s;
+}
+.qrItem img:hover {
+  transform: scale(1.1);
+}
 
-/* フルスクリーン案内 */
+/* --- フルスクリーン案内 --- */
 #clickToFullscreen {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   color: white;
-  font-size: 2.5vw;
+  font-size: 2vw;
   text-align: center;
-  text-shadow: 0 0 10px rgba(0,0,0,0.7);
-  background: rgba(0,0,0,0.4);
+  text-shadow: 0 0 15px rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.5);
   padding: 20px 40px;
   border-radius: 20px;
 }
@@ -87,33 +104,53 @@ html, body {
 <body>
 
 <div class="screen" id="slideshow">
+  <!-- 6枚分用意 -->
   <div class="slide" id="slide0"></div>
   <div class="slide" id="slide1"></div>
   <div class="slide" id="slide2"></div>
   <div class="slide" id="slide3"></div>
   <div class="slide" id="slide4"></div>
+  <div class="slide" id="slide5"></div>
 
   <div id="phoneFooter">☎ 03-3372-6530</div>
   <div id="caption" class="caption"></div>
 
+  <!-- QRリンク -->
   <div id="qrLinks">
-    <div class="qrItem"><a href="https://www.instagram.com/cycle_center_yamaguchi/" target="_blank"><img src="Instagram.jpg"><div>Instagram</div></a></div>
-    <div class="qrItem"><a href="https://x.com/Yamaguchi_Cycle" target="_blank"><img src="X.png"><div>X</div></a></div>
-    <div class="qrItem"><a href="https://www.giant-bicycles.com/jp" target="_blank"><img src="Facebook.png"><div>Facebook</div></a></div>
-    <div class="qrItem"><a href="https://cycle-center-yamaguchi.jimdofree.com/" target="_blank"><img src="HP.png"><div>公式HP</div></a></div>
+    <div class="qrItem">
+      <a href="https://www.instagram.com/cycle_center_yamaguchi/" target="_blank">
+        <img src="Instagram.jpg"><div>Instagram</div>
+      </a>
+    </div>
+    <div class="qrItem">
+      <a href="https://x.com/Yamaguchi_Cycle" target="_blank">
+        <img src="X.png"><div>X（旧Twitter）</div>
+      </a>
+    </div>
+    <div class="qrItem">
+      <a href="https://www.facebook.com/" target="_blank">
+        <img src="Facebook.png"><div>Facebook</div>
+      </a>
+    </div>
+    <div class="qrItem">
+      <a href="https://cycle-center-yamaguchi.jimdofree.com/" target="_blank">
+        <img src="HP.png"><div>公式HP</div>
+      </a>
+    </div>
   </div>
 
-  <div id="clickToFullscreen">タップで全画面表示</div>
+  <div id="clickToFullscreen">▶ タップで全画面表示</div>
 </div>
 
 <script>
+/* === スライド設定 === */
 const slides = [
   {img:'横長ロゴ.jpg', caption:''},
   {img:'大正13年店舗.jpg', caption:'創業100年<br>中野区の街の自転車屋'},
-  {img:'店舗正面.jpg', caption:'<span style="white-space:nowrap;">電動アシストからスポーツ車まで</span><br>幅広く対応'},
+  {img:'店舗正面.jpg', caption:'電動アシストからスポーツ車まで<br>幅広く対応'},
   {img:'店舗斜め.JPG', caption:'修理・点検・カスタムも<br>お任せください'},
-  {img:'ピット.jpg', caption:'自転車のことなら<br>なんでもご相談ください'},
-  {img:'イベント.jpg', caption:''},
+  {img:'ピット.jpg', caption:'CYCLE CENTER YAMAGUCHI'},
+  {img:'イベント.jpg', caption:'いつでもお気軽にご来店ください'}
 ];
 
 let current = 0;
@@ -136,24 +173,18 @@ function nextSlide(){
 showSlide(current);
 setInterval(nextSlide, 20000);
 
-/* ==== Chrome用：クリックでフルスクリーン ==== */
+/* === タップでフルスクリーン === */
 const slideshow = document.getElementById('slideshow');
 const fullscreenText = document.getElementById('clickToFullscreen');
-
 slideshow.addEventListener('click', () => {
   openFullscreen();
   fullscreenText.style.display = 'none';
 });
-
 function openFullscreen() {
   const el = document.documentElement;
-  if (el.requestFullscreen) {
-    el.requestFullscreen();
-  } else if (el.webkitRequestFullscreen) {
-    el.webkitRequestFullscreen();
-  } else if (el.msRequestFullscreen) {
-    el.msRequestFullscreen();
-  }
+  if (el.requestFullscreen) el.requestFullscreen();
+  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  else if (el.msRequestFullscreen) el.msRequestFullscreen();
 }
 </script>
 
