@@ -12,12 +12,24 @@ html, body {
   font-family: "Noto Sans JP", sans-serif;
   overflow: hidden;
 }
-.screen { position: relative; width: 100%; height: 100%; }
 
-/* スライドショー部分 */
+/* 画面共通 */
+.screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0; left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== スライドショー ===== */
 .slide {
   position: absolute;
-  top:0; left:0; width:100%; height:100%;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
   opacity: 0;
@@ -33,87 +45,155 @@ html, body {
   font-weight: 700;
   text-align: center;
   text-shadow: 0 4px 12px rgba(0,0,0,0.7);
-  padding: 1% 2%;
-  border-radius: 6px;
-  transition: opacity 1s;
   font-size: 3vw;
   line-height: 1.4;
-  white-space: normal;
 }
 
 #phoneFooter {
   position: absolute;
-  left: 50%;
   top: 2%;
+  left: 50%;
   transform: translateX(-50%);
   color: #fff;
   font-weight: bold;
-  text-shadow: 0 0 10px rgba(0,0,0,0.7);
   font-size: 2.5vw;
+  text-shadow: 0 0 10px rgba(0,0,0,0.7);
 }
 
 #clickToMenu {
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 3%;
+  left: 50%;
+  transform: translateX(-50%);
   color: white;
-  font-size: 2.5vw;
+  font-size: 1.8vw;
   text-align: center;
-  text-shadow: 0 0 10px rgba(0,0,0,0.7);
-  background: rgba(0,0,0,0.4);
-  padding: 20px 40px;
-  border-radius: 20px;
+  background: rgba(0,0,0,0.5);
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
-/* メニュー画面 */
+/* ===== メニュー画面 ===== */
 #menuScreen {
   display: none;
-  position: absolute;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:#111;
-  color:#fff;
-  text-align:center;
-  flex-direction:column;
+  background: #111;
+  color: #fff;
 }
 
 #menuLogo {
-  width:40%;
-  max-width:600px;
-  margin:3vh auto 5vh auto;
+  width: 40%;
+  max-width: 500px;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
 }
 
 .menuButtons {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:3vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3vh;
 }
 
 .menuButton {
-  width:40%;
-  max-width:500px;
-  background:#222;
-  border:2px solid #555;
-  border-radius:20px;
-  padding:3vh;
-  font-size:2vw;
-  color:#fff;
-  text-decoration:none;
-  font-weight:700;
+  width: 40%;
+  max-width: 500px;
+  background: #222;
+  border: 2px solid #555;
+  border-radius: 20px;
+  padding: 3vh;
+  font-size: 2vw;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
   transition: background 0.3s, transform 0.3s;
 }
 .menuButton:hover { background:#444; transform:scale(1.05); }
 
 #backBtn {
-  position:absolute;
-  bottom:5%;
-  left:50%;
-  transform:translateX(-50%);
-  background:#555;
-  padding:2vh 4vh;
-  border-radius:20px;
-  font-size:2vw;
-  font-weight:700;
-  cursor:pointer;
-  transition:background 0.3
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #555;
+  padding: 2vh 4vh;
+  border-radius: 20px;
+  font-size: 2vw;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#backBtn:hover { background:#777; }
+</style>
+</head>
+<body>
+
+<!-- スライドショー画面 -->
+<div class="screen" id="slideshowScreen">
+  <div id="slidesContainer"></div>
+  <div id="phoneFooter">☎ 03-3372-6530</div>
+  <div id="caption"></div>
+  <div id="clickToMenu">タップでメニュー表示</div>
+</div>
+
+<!-- メニュー画面 -->
+<div id="menuScreen" class="screen">
+  <img id="menuLogo" src="横長ロゴ.jpg" alt="Logo">
+  <div class="menuButtons">
+    <a href="https://www.giant-bicycles.com/jp" target="_blank" class="menuButton">GIANT</a>
+    <a href="https://www.yamaha-motor.co.jp/pas/" target="_blank" class="menuButton">YAMAHA</a>
+    <a href="https://cycle.panasonic.com/" target="_blank" class="menuButton">PANASONIC</a>
+  </div>
+  <div id="backBtn">← 戻る</div>
+</div>
+
+<script>
+/* ===== スライドショー設定 ===== */
+const slides = [
+  {img:'横長ロゴ.jpg', caption:''},
+  {img:'大正13年店舗.jpg', caption:'創業100年<br>中野区の街の自転車屋'},
+  {img:'店舗正面.jpg', caption:'電動アシストからスポーツ車まで<br>幅広く対応'},
+  {img:'店舗斜め.JPG', caption:'修理・点検・カスタムも<br>お任せください'},
+  {img:'ピット.jpg', caption:'自転車のことなら<br>なんでもご相談ください'}
+];
+
+const slidesContainer = document.getElementById('slidesContainer');
+slides.forEach((s,i)=>{
+  const el = document.createElement('div');
+  el.className = 'slide';
+  el.style.backgroundImage = `url('${s.img}')`;
+  slidesContainer.appendChild(el);
+});
+const slideEls = document.querySelectorAll('.slide');
+const captionEl = document.getElementById('caption');
+let current = 0;
+
+function showSlide(i){
+  slideEls.forEach((el,idx)=>{
+    el.style.opacity = (i===idx)?1:0;
+  });
+  captionEl.innerHTML = slides[i].caption;
+}
+
+function nextSlide(){
+  current = (current + 1) % slides.length;
+  showSlide(current);
+}
+
+showSlide(0);
+setInterval(nextSlide, 20000);
+
+/* ===== メニュー切替 ===== */
+const slideshowScreen = document.getElementById('slideshowScreen');
+const menuScreen = document.getElementById('menuScreen');
+document.getElementById('clickToMenu').addEventListener('click', ()=>{
+  slideshowScreen.style.display = 'none';
+  menuScreen.style.display = 'flex';
+});
+document.getElementById('backBtn').addEventListener('click', ()=>{
+  menuScreen.style.display = 'none';
+  slideshowScreen.style.display = 'flex';
+});
+</script>
+</body>
+</html>
