@@ -15,12 +15,9 @@ html, body {
   overflow: hidden;
 }
 
-/* 共通レイアウト */
 .screen {
-  position: fixed; /* ← 絶対から固定に変更（フルスクリーン対応） */
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -30,9 +27,7 @@ html, body {
 /* ===== スライドショー ===== */
 .slide {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -40,7 +35,6 @@ html, body {
   transition: opacity 1s ease-in-out;
 }
 
-/* スライドキャプション */
 #caption {
   position: absolute;
   left: 50%;
@@ -55,7 +49,6 @@ html, body {
   z-index: 2;
 }
 
-/* 電話番号 */
 #phoneFooter {
   position: absolute;
   top: 2%;
@@ -68,20 +61,36 @@ html, body {
   z-index: 2;
 }
 
-/* メニュー誘導 */
-#clickToMenu {
+/* ===== QRコード表示（スライドショー下部） ===== */
+#qrLinks {
   position: absolute;
-  bottom: 3%;
+  bottom: 2%;
   left: 50%;
   transform: translateX(-50%);
-  color: white;
-  font-size: 1.8vw;
+  display: flex;
+  justify-content: center;
+  gap: 3vw;
+  z-index: 3;
+}
+
+.qrItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  font-size: 1.2vw;
   text-align: center;
-  background: rgba(0,0,0,0.5);
-  padding: 10px 20px;
+}
+
+.qrItem img {
+  width: 6vw;
+  max-width: 120px;
   border-radius: 10px;
-  cursor: pointer;
-  z-index: 2;
+  margin-bottom: 0.5vh;
+  transition: transform 0.25s;
+}
+.qrItem img:hover {
+  transform: scale(1.08);
 }
 
 /* ===== メニュー画面 ===== */
@@ -90,6 +99,7 @@ html, body {
   background: #111;
   color: #fff;
   flex-direction: column;
+  justify-content: flex-start;
 }
 
 #menuLogo {
@@ -135,34 +145,58 @@ html, body {
   font-size: 2vw;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.3s;
 }
-#backBtn:hover {
-  background: #777;
-}
+#backBtn:hover { background: #777; }
 
-/* スマホ対応 */
 @media (max-width: 768px) {
   #caption { font-size: 6vw; top: 30%; }
   #phoneFooter { font-size: 4.5vw; }
-  #clickToMenu { font-size: 4vw; }
   .menuButton { width: 70%; font-size: 4.5vw; }
   #backBtn { font-size: 4.5vw; }
+  .qrItem img { width: 22vw; }
+  .qrItem { font-size: 3.5vw; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- スライドショー画面 -->
+<!-- ===== スライドショー画面 ===== -->
 <div class="screen" id="slideshowScreen">
   <div id="slidesContainer"></div>
   <div id="phoneFooter">☎ 03-3372-6530</div>
   <div id="caption"></div>
-  <div id="clickToMenu">タップでメニュー表示</div>
+
+  <!-- 下部QR -->
+  <div id="qrLinks">
+    <div class="qrItem">
+      <a href="https://www.instagram.com/cycle_center_yamaguchi/" target="_blank">
+        <img src="Instagram.jpg" alt="Instagram">
+      </a>
+      <div>Instagram</div>
+    </div>
+    <div class="qrItem">
+      <a href="https://x.com/Yamaguchi_Cycle" target="_blank">
+        <img src="X.png" alt="X">
+      </a>
+      <div>X</div>
+    </div>
+    <div class="qrItem">
+      <a href="https://www.facebook.com/" target="_blank">
+        <img src="Facebook.png" alt="Facebook">
+      </a>
+      <div>Facebook</div>
+    </div>
+    <div class="qrItem">
+      <a href="https://cycle-center-yamaguchi.jimdofree.com/" target="_blank">
+        <img src="HP.png" alt="HP">
+      </a>
+      <div>公式HP</div>
+    </div>
+  </div>
 </div>
 
-<!-- メニュー画面 -->
+<!-- ===== メニュー画面 ===== -->
 <div id="menuScreen" class="screen">
   <img id="menuLogo" src="横長ロゴ.jpg" alt="Logo">
   <div class="menuButtons">
@@ -196,34 +230,39 @@ const captionEl = document.getElementById('caption');
 let current = 0;
 
 function showSlide(i) {
-  slideEls.forEach((el, idx) => {
-    el.style.opacity = (i === idx) ? 1 : 0;
-  });
+  slideEls.forEach((el, idx) => el.style.opacity = (i === idx) ? 1 : 0);
   captionEl.innerHTML = slides[i].caption;
 }
-
-function nextSlide() {
+showSlide(0);
+setInterval(() => {
   current = (current + 1) % slides.length;
   showSlide(current);
-}
-
-showSlide(0);
-setInterval(nextSlide, 20000);
+}, 20000);
 
 /* ===== メニュー切替 ===== */
 const slideshowScreen = document.getElementById('slideshowScreen');
 const menuScreen = document.getElementById('menuScreen');
 
-document.getElementById('clickToMenu').addEventListener('click', () => {
-  slideshowScreen.style.display = 'none';
-  menuScreen.style.display = 'flex';
+/* QRリンク以外をクリックしたらメニューへ */
+slideshowScreen.addEventListener('click', e => {
+  if (!e.target.closest('#qrLinks')) {
+    slideshowScreen.style.display = 'none';
+    menuScreen.style.display = 'flex';
+  }
 });
 
+/* 戻るボタン */
 document.getElementById('backBtn').addEventListener('click', () => {
   menuScreen.style.display = 'none';
   slideshowScreen.style.display = 'flex';
 });
-</script>
 
+/* ===== フルスクリーン起動 ===== */
+document.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(()=>{});
+  }
+});
+</script>
 </body>
 </html>
