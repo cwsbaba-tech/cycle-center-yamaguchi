@@ -219,3 +219,57 @@ const slides = [
 
 const slidesContainer = document.getElementById('slidesContainer');
 slides.forEach(s => {
+  const el = document.createElement('div');
+  el.className = 'slide';
+  if (s.vertical) el.classList.add('vertical');
+  el.style.backgroundImage = `url('${s.img}')`;
+  slidesContainer.appendChild(el);
+});
+
+const slideEls = document.querySelectorAll('.slide');
+const captionEl = document.getElementById('caption');
+let current = 0;
+
+function showSlide(i) {
+  slideEls.forEach((el, idx) => {
+    el.style.opacity = (i === idx) ? 1 : 0;
+    if (idx === i && slides[i].vertical) {
+      el.style.animation = "none";
+      void el.offsetWidth;
+      el.style.animation = "verticalPan 20s linear forwards";
+    }
+  });
+  captionEl.innerHTML = slides[i].caption;
+}
+function nextSlide() {
+  current = (current + 1) % slides.length;
+  showSlide(current);
+}
+showSlide(0);
+setInterval(nextSlide, 20000);
+
+/* ===== メニュー切替 ===== */
+const slideshowScreen = document.getElementById('slideshowScreen');
+const menuScreen = document.getElementById('menuScreen');
+
+slideshowScreen.addEventListener('click', () => {
+  if (document.fullscreenElement === null) openFullscreen();
+  slideshowScreen.style.display = 'none';
+  menuScreen.style.display = 'flex';
+});
+document.getElementById('backBtn').addEventListener('click', () => {
+  menuScreen.style.display = 'none';
+  slideshowScreen.style.display = 'flex';
+});
+
+/* ===== フルスクリーン起動 ===== */
+function openFullscreen() {
+  const el = document.documentElement;
+  if (el.requestFullscreen) el.requestFullscreen();
+  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  else if (el.msRequestFullscreen) el.msRequestFullscreen();
+}
+</script>
+
+</body>
+</html>
