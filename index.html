@@ -39,8 +39,6 @@ html, body {
 }
 
 /* 縦長画像専用アニメーション */
-<style>
-/* 縦長画像専用アニメーション（余韻あり） */
 @keyframes verticalPan {
   0%   { background-position: center top; }
   90%  { background-position: center bottom; }
@@ -48,23 +46,8 @@ html, body {
 }
 .slide.vertical {
   animation: verticalPan 18s linear forwards;
-  animation-delay: 1s; /* ← 最初に1秒静止 */
+  animation-delay: 1s; /* 最初に1秒静止 */
 }
-</style>
-
-<script>
-function showSlide(i) {
-  slideEls.forEach((el, idx) => {
-    el.style.opacity = (i === idx) ? 1 : 0;
-    if (idx === i && slides[i].vertical) {
-      el.style.animation = "none";
-      void el.offsetWidth; // リセット
-      el.style.animation = "verticalPan 18s linear forwards 1s"; // ←18秒動き＋1秒余韻
-    }
-  });
-  captionEl.innerHTML = slides[i].caption;
-}
-
 
 #caption {
   position: absolute;
@@ -220,7 +203,7 @@ const slides = [
   {img:'店舗正面.jpg', caption:'電動アシストからスポーツ車まで<br>幅広く対応'},
   {img:'店舗斜め.JPG', caption:'修理・点検・カスタムも<br>お任せください'},
   {img:'ピット.jpg', caption:'自転車のことなら<br>なんでもご相談ください'},
-  {img:'イベント.jpg', caption:'', vertical: true} // ← 縦長画像
+  {img:'イベント.jpg', caption:'', vertical: true} // 縦長画像
 ];
 
 const slidesContainer = document.getElementById('slidesContainer');
@@ -242,11 +225,12 @@ function showSlide(i) {
     if (idx === i && slides[i].vertical) {
       el.style.animation = "none";
       void el.offsetWidth; // 再スタート用
-      el.style.animation = "verticalPan 20s linear forwards";
+      el.style.animation = "verticalPan 20s linear forwards"; // 18秒動き＋1秒余韻
     }
   });
   captionEl.innerHTML = slides[i].caption;
 }
+
 function nextSlide() {
   current = (current + 1) % slides.length;
   showSlide(current);
