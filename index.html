@@ -41,12 +41,14 @@ html, body {
 /* 縦長画像専用アニメーション */
 @keyframes verticalPan {
   0% { background-position: center top; }
+  80% { background-position: center bottom; }
   100% { background-position: center bottom; }
 }
 .slide.vertical {
   animation: verticalPan 20s linear forwards;
 }
 
+/* キャプション・電話番号 */
 #caption {
   position: absolute;
   left: 50%;
@@ -94,8 +96,8 @@ html, body {
 /* ===== メニュー画面 ===== */
 #menuScreen {
   display: none;
-  background: #111;
-  color: #fff;
+  background: #fff;
+  color: #000;
   flex-direction: column;
 }
 #menuLogo {
@@ -104,35 +106,43 @@ html, body {
   margin-top: 5vh;
   margin-bottom: 5vh;
 }
+
+/* 横並びメニュー配置 */
 .menuButtons {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 3vh;
+  gap: 4vw;
+  flex-wrap: wrap;
+  margin-bottom: 10vh;
 }
 .menuButton {
-  width: 40%;
-  max-width: 500px;
-  background: #222;
-  border: 2px solid #555;
+  width: 18vw;
+  min-width: 200px;
+  background: #f5f5f5;
+  border: 2px solid #ccc;
   border-radius: 20px;
-  padding: 3vh;
-  font-size: 2vw;
-  color: #fff;
+  padding: 3vh 2vw;
+  font-size: 1.8vw;
+  color: #000;
   text-decoration: none;
   font-weight: 700;
+  text-align: center;
   transition: background 0.3s, transform 0.3s;
 }
 .menuButton:hover {
-  background: #444;
+  background: #ddd;
   transform: scale(1.05);
 }
+
+/* 戻るボタン */
 #backBtn {
   position: absolute;
   bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
-  background: #555;
+  background: #333;
+  color: #fff;
   padding: 2vh 4vh;
   border-radius: 20px;
   font-size: 2vw;
@@ -140,13 +150,16 @@ html, body {
   cursor: pointer;
   transition: background 0.3s;
 }
-#backBtn:hover { background: #777; }
+#backBtn:hover { background: #555; }
 
+/* スマホ対応 */
 @media (max-width: 768px) {
   #caption { font-size: 6vw; top: 30%; }
   #phoneFooter { font-size: 4.5vw; }
-  .menuButton { width: 70%; font-size: 4.5vw; }
+  .menuButton { width: 30vw; font-size: 4vw; }
   #backBtn { font-size: 4.5vw; }
+  .qrItem img { width: 12vw; }
+  .qrItem { font-size: 3vw; }
 }
 </style>
 </head>
@@ -201,62 +214,8 @@ const slides = [
   {img:'店舗正面.jpg', caption:'電動アシストからスポーツ車まで<br>幅広く対応'},
   {img:'店舗斜め.JPG', caption:'修理・点検・カスタムも<br>お任せください'},
   {img:'ピット.jpg', caption:'自転車のことなら<br>なんでもご相談ください'},
-  {img:'イベント.jpg', caption:'', vertical: true} // ← 縦長画像
+  {img:'イベント.jpg', caption:'', vertical: true}
 ];
 
 const slidesContainer = document.getElementById('slidesContainer');
 slides.forEach(s => {
-  const el = document.createElement('div');
-  el.className = 'slide';
-  if (s.vertical) el.classList.add('vertical');
-  el.style.backgroundImage = `url('${s.img}')`;
-  slidesContainer.appendChild(el);
-});
-
-const slideEls = document.querySelectorAll('.slide');
-const captionEl = document.getElementById('caption');
-let current = 0;
-
-function showSlide(i) {
-  slideEls.forEach((el, idx) => {
-    el.style.opacity = (i === idx) ? 1 : 0;
-    if (idx === i && slides[i].vertical) {
-      el.style.animation = "none";
-      void el.offsetWidth; // 再スタート用
-      el.style.animation = "verticalPan 20s linear forwards";
-    }
-  });
-  captionEl.innerHTML = slides[i].caption;
-}
-function nextSlide() {
-  current = (current + 1) % slides.length;
-  showSlide(current);
-}
-showSlide(0);
-setInterval(nextSlide, 20000);
-
-/* ===== モード切替 ===== */
-const slideshowScreen = document.getElementById('slideshowScreen');
-const menuScreen = document.getElementById('menuScreen');
-
-slideshowScreen.addEventListener('click', () => {
-  if (document.fullscreenElement === null) openFullscreen();
-  slideshowScreen.style.display = 'none';
-  menuScreen.style.display = 'flex';
-});
-document.getElementById('backBtn').addEventListener('click', () => {
-  menuScreen.style.display = 'none';
-  slideshowScreen.style.display = 'flex';
-});
-
-/* ===== フルスクリーン起動 ===== */
-function openFullscreen() {
-  const el = document.documentElement;
-  if (el.requestFullscreen) el.requestFullscreen();
-  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-  else if (el.msRequestFullscreen) el.msRequestFullscreen();
-}
-</script>
-
-</body>
-</html>
