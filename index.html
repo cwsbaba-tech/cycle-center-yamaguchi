@@ -43,6 +43,9 @@ html, body {
   80%  { background-position: center top; }
   100% { background-position: center top; }
 }
+.slide.vertical {
+  animation: verticalPanLoop 20s ease-in-out forwards;
+}
 
 /* 電話番号 */
 #phoneFooter {
@@ -204,7 +207,7 @@ const slides = [
   {img:'店舗正面.jpg', caption:'電動アシストからスポーツ車まで<br>幅広く対応'},
   {img:'店舗斜め.JPG', caption:'修理・点検・カスタムも<br>お任せください'},
   {img:'ピット.jpg', caption:'自転車のことなら<br>なんでもご相談ください'},
-  {img:'イベント.jpg', caption:'', vertical:true}
+  {img:'イベント.jpg', caption:'', vertical:true} // ← この1枚だけ縦移動
 ];
 
 const slidesContainer = document.getElementById('slidesContainer');
@@ -222,10 +225,12 @@ let current = 0;
 function showSlide(i) {
   slideEls.forEach((el, idx) => {
     el.style.opacity = (i === idx) ? 1 : 0;
-    el.style.animation = "none"; // アニメーションをリセット
-    void el.offsetWidth; // 再適用のためのリフロー
+    el.style.animation = "none"; // リセット
+    void el.offsetWidth; // リフローで再適用
     if (slides[i].vertical) {
-      el.style.animation = "verticalPanLoop 20s ease-in-out forwards";
+      el.classList.add('vertical');
+    } else {
+      el.classList.remove('vertical');
     }
   });
   captionEl.innerHTML = slides[i].caption;
