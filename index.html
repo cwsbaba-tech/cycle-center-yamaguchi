@@ -13,10 +13,12 @@ html, body {
   background: #000;
   font-family: "Noto Sans JP", sans-serif;
   overflow: hidden;
-  transform: rotate(180deg); /* ← 全画面180度回転 */
+
+  /* ★ 画面全体を上下反転 ★ */
+  transform: rotate(180deg);
+  transform-origin: center;
 }
 
-/* ===== 画面基本設定 ===== */
 .screen {
   position: fixed;
   top: 0; left: 0;
@@ -201,7 +203,6 @@ html, body {
 </div>
 
 <script>
-/* ===== スライドショー設定 ===== */
 const slides = [
   {img:'横長ロゴ.jpg', caption:''},
   {img:'大正13年店舗.jpg', caption:'創業100年<br>中野区の街の自転車屋'},
@@ -210,7 +211,6 @@ const slides = [
   {img:'ピット.jpg', caption:'自転車のことなら<br>なんでもご相談ください'},
   {img:'イベント.jpg', caption:'', vertical: true}
 ];
-
 const slidesContainer = document.getElementById('slidesContainer');
 slides.forEach(s => {
   const el = document.createElement('div');
@@ -219,11 +219,9 @@ slides.forEach(s => {
   el.style.backgroundImage = `url('${s.img}')`;
   slidesContainer.appendChild(el);
 });
-
 const slideEls = document.querySelectorAll('.slide');
 const captionEl = document.getElementById('caption');
 let current = 0;
-
 function showSlide(i) {
   slideEls.forEach((el, idx) => {
     el.style.opacity = (i === idx) ? 1 : 0;
@@ -242,10 +240,8 @@ function nextSlide() {
 showSlide(0);
 setInterval(nextSlide, 20000);
 
-/* ===== 画面切替 ===== */
 const slideshowScreen = document.getElementById('slideshowScreen');
 const menuScreen = document.getElementById('menuScreen');
-
 slideshowScreen.addEventListener('click', () => {
   ensureFullscreen();
   slideshowScreen.style.display = 'none';
@@ -256,8 +252,6 @@ document.getElementById('backBtn').addEventListener('click', () => {
   slideshowScreen.style.display = 'flex';
   ensureFullscreen();
 });
-
-/* ===== フルスクリーン制御 ===== */
 function ensureFullscreen() {
   const el = document.documentElement;
   if (!document.fullscreenElement) {
