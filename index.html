@@ -13,7 +13,10 @@ html, body {
   background: #000;
   font-family: "Noto Sans JP", sans-serif;
   overflow: hidden;
+  transform: rotate(180deg); /* ← 全画面180度回転 */
 }
+
+/* ===== 画面基本設定 ===== */
 .screen {
   position: fixed;
   top: 0; left: 0;
@@ -106,7 +109,7 @@ html, body {
 }
 .menuButtons {
   display: flex;
-  flex-direction: row;  /* ← 横並び */
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   gap: 5vw;
@@ -263,14 +266,11 @@ function ensureFullscreen() {
     else if (el.msRequestFullscreen) el.msRequestFullscreen();
   }
 }
-// フルスクリーン解除検知 → 自動復帰
 document.addEventListener('fullscreenchange', () => {
   if (!document.fullscreenElement) {
     setTimeout(ensureFullscreen, 500);
   }
 });
-
-// 初回自動フルスクリーン
 setTimeout(ensureFullscreen, 1000);
 </script>
 
