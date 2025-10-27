@@ -113,13 +113,13 @@ html, body {
   flex-wrap: wrap;
 }
 .menuButton {
-  width: 12%;
-  min-width: 100px;
+  width: 20%;
+  min-width: 180px;
   background: #f5f5f5;
   border: 2px solid #ccc;
-  border-radius: 10px;
-  padding: 1vh;
-  font-size: 1.2vw;
+  border-radius: 20px;
+  padding: 3vh;
+  font-size: 1.8vw;
   color: #000;
   text-decoration: none;
   font-weight: 700;
@@ -140,30 +140,37 @@ html, body {
 }
 
 /* ===== 戻るボタン ===== */
-#backBtn, #frameBackBtn {
+#backBtn, #frameBackBtn, #menuReturnBtn {
   position: absolute;
-  bottom: 2%;
-  left: 2%;
-  background: rgba(255,255,255,0.8);
+  bottom: 5%;
+  background: #ccc;
   color: #000;
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  padding: 2vh 4vh;
+  border-radius: 20px;
   font-size: 2vw;
-  font-weight: bold;
+  font-weight: 700;
   cursor: pointer;
-  z-index: 10;
-  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  transition: background 0.3s;
 }
-#backBtn:hover, #frameBackBtn:hover { background: #eee; }
+#backBtn:hover, #frameBackBtn:hover, #menuReturnBtn:hover { background: #aaa; }
 
-#frameBackBtn { display: none; }
+#backBtn {
+  left: 5%;
+}
+#frameBackBtn {
+  left: 5%;
+  display: none;
+}
+#menuReturnBtn {
+  left: 25%;
+  display: none;
+}
 
 @media (max-width: 768px) {
   #caption { font-size: 6vw; top: 30%; }
   #phoneFooter { font-size: 4.5vw; }
-  .menuButton { width: 25%; font-size: 4vw; }
+  .menuButton { width: 30%; font-size: 4vw; }
+  #backBtn, #frameBackBtn, #menuReturnBtn { font-size: 4.5vw; }
 }
 </style>
 </head>
@@ -195,8 +202,9 @@ html, body {
     <a href="#" data-url="https://dahon-intl.jp/" class="menuButton">DAHON</a>
   </div>
 
-  <button id="backBtn">←</button>
-  <button id="frameBackBtn">←</button>
+  <div id="backBtn">← 戻る</div>
+  <div id="frameBackBtn">← 1つ前に戻る</div>
+  <div id="menuReturnBtn">メニューに戻る</div>
 </div>
 
 <script>
@@ -247,6 +255,7 @@ const menuScreen = document.getElementById('menuScreen');
 const iframe = document.getElementById('siteFrame');
 const buttonGroup = document.getElementById('buttonGroup');
 const frameBackBtn = document.getElementById('frameBackBtn');
+const menuReturnBtn = document.getElementById('menuReturnBtn');
 
 slideshowScreen.addEventListener('click', () => {
   ensureFullscreen();
@@ -254,11 +263,19 @@ slideshowScreen.addEventListener('click', () => {
   menuScreen.style.display = 'flex';
 });
 
-/* ===== メニュー戻る ===== */
 document.getElementById('backBtn').addEventListener('click', () => {
-  menuScreen.style.display = 'none';
-  slideshowScreen.style.display = 'flex';
-  ensureFullscreen();
+  if (iframe.style.display === "block") {
+    iframe.src = "";
+    iframe.style.display = "none";
+    buttonGroup.style.display = "flex";
+    document.getElementById("menuLogo").style.display = "block";
+    frameBackBtn.style.display = "none";
+    menuReturnBtn.style.display = "none";
+  } else {
+    menuScreen.style.display = 'none';
+    slideshowScreen.style.display = 'flex';
+    ensureFullscreen();
+  }
 });
 
 /* ===== 外部リンクをiframeに表示 ===== */
@@ -266,33 +283,28 @@ document.querySelectorAll(".menuButton").forEach(btn => {
   btn.addEventListener("click", e => {
     e.preventDefault();
     const url = btn.dataset.url;
-    if (url.includes("giant")) {
-      // GIANTだけ別タブで開く
-      window.open(url, "_blank");
-      // GIANTは直接スライドショーに戻る
-      menuScreen.style.display = 'none';
-      slideshowScreen.style.display = 'flex';
-    } else {
-      iframe.src = url;
-      iframe.style.display = "block";
-      buttonGroup.style.display = "none";
-      document.getElementById("menuLogo").style.display = "none";
-      frameBackBtn.style.display = "block";
-    }
+    iframe.src = url;
+    iframe.style.display = "block";
+    buttonGroup.style.display = "none";
+    document.getElementById("menuLogo").style.display = "none";
+    frameBackBtn.style.display = "block";
+    menuReturnBtn.style.display = "block";
   });
 });
 
 /* ===== iframe戻るボタン ===== */
 frameBackBtn.addEventListener("click", () => {
-  // iframeを閉じてスライドショーに戻る
+  iframe.contentWindow.history.back();
+});
+
+/* ===== メニューに戻る ===== */
+menuReturnBtn.addEventListener("click", () => {
   iframe.src = "";
   iframe.style.display = "none";
-  frameBackBtn.style.display = "none";
   buttonGroup.style.display = "flex";
   document.getElementById("menuLogo").style.display = "block";
-  menuScreen.style.display = "none";
-  slideshowScreen.style.display = "flex";
-  ensureFullscreen();
+  frameBackBtn.style.display = "none";
+  menuReturnBtn.style.display = "none";
 });
 
 /* ===== フルスクリーン制御 ===== */
