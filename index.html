@@ -1,275 +1,48 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>CYCLE CENTER YAMAGUCHI</title>
-<style>
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  background: #000;
-  font-family: "Noto Sans JP", sans-serif;
-  overflow: hidden;
-}
-.screen {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-/* ===== スライドショー ===== */
-.slide {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
-
-/* 縦長画像専用アニメーション */
-@keyframes verticalPan {
-  0% { background-position: center top; }
-  80% { background-position: center bottom; }
-  100% { background-position: center bottom; }
-}
-.slide.vertical {
-  animation: verticalPan 20s linear forwards;
-}
-
-/* キャプション・電話番号 */
-#caption {
-  position: absolute;
-  left: 50%;
-  top: 25%;
-  transform: translateX(-50%);
-  color: #fff;
-  font-weight: 700;
-  text-align: center;
-  text-shadow: 0 4px 12px rgba(0,0,0,0.7);
-  font-size: 3vw;
-  line-height: 1.4;
-  z-index: 2;
-}
-#phoneFooter {
-  position: absolute;
-  top: 2%;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #fff;
-  font-weight: bold;
-  font-size: 2.5vw;
-  text-shadow: 0 0 10px rgba(0,0,0,0.7);
-  z-index: 2;
-}
-
-/* ===== QRリンク ===== */
-#qrLinks {
-  position: absolute;
-  bottom: 1%;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 2.2vw;
-  z-index: 3;
-}
-.qrItem { text-align: center; color: #fff; font-size: 1vw; }
-.qrItem img {
-  width: 5vw;
-  height: auto;
-  border-radius: 10px;
-  transition: transform 0.25s;
-}
-.qrItem img:hover { transform: scale(1.1); }
-
-/* ===== メニュー画面 ===== */
-#menuScreen {
-  display: none;
-  background: #fff;
-  color: #000;
-  flex-direction: column;
-}
-#menuLogo {
-  width: 40%;
-  max-width: 500px;
-  margin-top: 5vh;
-  margin-bottom: 5vh;
-}
-
-/* 横並びメニュー配置 */
-.menuButtons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4vw;
-  flex-wrap: wrap;
-  margin-bottom: 10vh;
-}
-.menuButton {
-  width: 18vw;
-  min-width: 200px;
-  background: #f5f5f5;
-  border: 2px solid #ccc;
-  border-radius: 20px;
-  padding: 3vh 2vw;
-  font-size: 1.8vw;
-  color: #000;
-  text-decoration: none;
-  font-weight: 700;
-  text-align: center;
-  transition: background 0.3s, transform 0.3s;
-}
-.menuButton:hover {
-  background: #ddd;
-  transform: scale(1.05);
-}
-
-/* 戻るボタン */
-#backBtn {
-  position: absolute;
-  bottom: 5%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #333;
-  color: #fff;
-  padding: 2vh 4vh;
-  border-radius: 20px;
-  font-size: 2vw;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-#backBtn:hover { background: #555; }
-
-/* スマホ対応 */
-@media (max-width: 768px) {
-  #caption { font-size: 6vw; top: 30%; }
-  #phoneFooter { font-size: 4.5vw; }
-  .menuButton { width: 30vw; font-size: 4vw; }
-  #backBtn { font-size: 4.5vw; }
-  .qrItem img { width: 12vw; }
-  .qrItem { font-size: 3vw; }
-}
-</style>
-</head>
-<body>
-
-<!-- ===== スライドショー画面 ===== -->
-<div class="screen" id="slideshowScreen">
-  <div id="slidesContainer"></div>
-  <div id="phoneFooter">☎ 03-3372-6530</div>
-  <div id="caption"></div>
-
-  <div id="qrLinks">
-    <div class="qrItem">
-      <a href="https://www.instagram.com/cycle_center_yamaguchi/" target="_blank">
-        <img src="Instagram.jpg"><div>Instagram</div>
-      </a>
-    </div>
-    <div class="qrItem">
-      <a href="https://x.com/Yamaguchi_Cycle" target="_blank">
-        <img src="X.png"><div>X</div>
-      </a>
-    </div>
-    <div class="qrItem">
-      <a href="https://www.facebook.com/" target="_blank">
-        <img src="Facebook.png"><div>Facebook</div>
-      </a>
-    </div>
-    <div class="qrItem">
-      <a href="https://cycle-center-yamaguchi.jimdofree.com/" target="_blank">
-        <img src="HP.png"><div>公式HP</div>
-      </a>
-    </div>
-  </div>
-</div>
-
 <!-- ===== メニュー画面 ===== -->
 <div id="menuScreen" class="screen">
   <img id="menuLogo" src="横長ロゴ.jpg" alt="Logo">
-  <div class="menuButtons">
-    <a href="https://www.giant-bicycles.com/jp" target="_blank" class="menuButton">GIANT</a>
-    <a href="https://www.yamaha-motor.co.jp/pas/" target="_blank" class="menuButton">YAMAHA</a>
-    <a href="https://cycle.panasonic.com/" target="_blank" class="menuButton">PANASONIC</a>
+
+  <!-- 外部サイト埋め込み用のiframe -->
+  <iframe id="siteFrame" src="" style="display:none; width:100%; height:80%; border:none;"></iframe>
+
+  <!-- ボタン群 -->
+  <div id="buttonGroup" class="menuButtons">
+    <a href="#" data-url="https://www.giant-bicycles.com/jp" class="menuButton">GIANT</a>
+    <a href="#" data-url="https://www.japan.bianchi.com/" class="menuButton">BIANCHI</a>
+    <a href="#" data-url="https://dahon-intl.jp/" class="menuButton">DAHON</a>
   </div>
+
   <div id="backBtn">← 戻る</div>
 </div>
 
 <script>
-/* ===== スライドショー設定 ===== */
-const slides = [
-  {img:'横長ロゴ.jpg', caption:''},
-  {img:'大正13年店舗.jpg', caption:'創業100年<br>中野区の街の自転車屋'},
-  {img:'店舗正面.jpg', caption:'電動アシストからスポーツ車まで<br>幅広く対応'},
-  {img:'店舗斜め.JPG', caption:'修理・点検・カスタムも<br>お任せください'},
-  {img:'ピット.jpg', caption:'自転車のことなら<br>なんでもご相談ください'},
-  {img:'イベント.jpg', caption:'', vertical: true}
-];
+/* === 追加スクリプト === */
+const iframe = document.getElementById("siteFrame");
+const buttonGroup = document.getElementById("buttonGroup");
 
-const slidesContainer = document.getElementById('slidesContainer');
-slides.forEach(s => {
-  const el = document.createElement('div');
-  el.className = 'slide';
-  if (s.vertical) el.classList.add('vertical');
-  el.style.backgroundImage = `url('${s.img}')`;
-  slidesContainer.appendChild(el);
-});
-
-const slideEls = document.querySelectorAll('.slide');
-const captionEl = document.getElementById('caption');
-let current = 0;
-
-function showSlide(i) {
-  slideEls.forEach((el, idx) => {
-    el.style.opacity = (i === idx) ? 1 : 0;
-    if (idx === i && slides[i].vertical) {
-      el.style.animation = "none";
-      void el.offsetWidth;
-      el.style.animation = "verticalPan 20s linear forwards";
-    }
+document.querySelectorAll(".menuButton").forEach(btn => {
+  btn.addEventListener("click", e => {
+    e.preventDefault();
+    const url = btn.dataset.url;
+    iframe.src = url;
+    iframe.style.display = "block";
+    buttonGroup.style.display = "none";
+    document.getElementById("menuLogo").style.display = "none";
   });
-  captionEl.innerHTML = slides[i].caption;
-}
-function nextSlide() {
-  current = (current + 1) % slides.length;
-  showSlide(current);
-}
-showSlide(0);
-setInterval(nextSlide, 20000);
-
-/* ===== メニュー切替 ===== */
-const slideshowScreen = document.getElementById('slideshowScreen');
-const menuScreen = document.getElementById('menuScreen');
-
-slideshowScreen.addEventListener('click', () => {
-  if (document.fullscreenElement === null) openFullscreen();
-  slideshowScreen.style.display = 'none';
-  menuScreen.style.display = 'flex';
-});
-document.getElementById('backBtn').addEventListener('click', () => {
-  menuScreen.style.display = 'none';
-  slideshowScreen.style.display = 'flex';
 });
 
-/* ===== フルスクリーン起動 ===== */
-function openFullscreen() {
-  const el = document.documentElement;
-  if (el.requestFullscreen) el.requestFullscreen();
-  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-  else if (el.msRequestFullscreen) el.msRequestFullscreen();
-}
+document.getElementById("backBtn").addEventListener("click", () => {
+  if (iframe.style.display === "block") {
+    // iframe表示中 → メニューに戻る
+    iframe.src = "";
+    iframe.style.display = "none";
+    buttonGroup.style.display = "flex";
+    document.getElementById("menuLogo").style.display = "block";
+  } else {
+    // メニュー → スライドショーへ戻る
+    menuScreen.style.display = "none";
+    slideshowScreen.style.display = "flex";
+    ensureFullscreen();
+  }
+});
 </script>
-
-</body>
-</html>
