@@ -39,13 +39,32 @@ html, body {
 }
 
 /* 縦長画像専用アニメーション */
+<style>
+/* 縦長画像専用アニメーション（余韻あり） */
 @keyframes verticalPan {
-  0% { background-position: center top; }
+  0%   { background-position: center top; }
+  90%  { background-position: center bottom; }
   100% { background-position: center bottom; }
 }
 .slide.vertical {
-  animation: verticalPan 20s linear forwards;
+  animation: verticalPan 18s linear forwards;
+  animation-delay: 1s; /* ← 最初に1秒静止 */
 }
+</style>
+
+<script>
+function showSlide(i) {
+  slideEls.forEach((el, idx) => {
+    el.style.opacity = (i === idx) ? 1 : 0;
+    if (idx === i && slides[i].vertical) {
+      el.style.animation = "none";
+      void el.offsetWidth; // リセット
+      el.style.animation = "verticalPan 18s linear forwards 1s"; // ←18秒動き＋1秒余韻
+    }
+  });
+  captionEl.innerHTML = slides[i].caption;
+}
+
 
 #caption {
   position: absolute;
