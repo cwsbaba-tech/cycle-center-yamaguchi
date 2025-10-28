@@ -25,6 +25,29 @@ html, body {
   align-items: center;
 }
 
+/* ===== 開始オーバーレイ ===== */
+#startOverlay {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: pointer;
+  text-align: center;
+}
+#startOverlay h1 {
+  font-size: 3vw;
+  margin-bottom: 2vh;
+}
+#startOverlay p {
+  font-size: 2vw;
+  opacity: 0.8;
+}
+
 /* ===== スライドショー ===== */
 .slide {
   position: absolute;
@@ -152,13 +175,21 @@ html, body {
   #phoneFooter { font-size: 4.5vw; }
   .menuButton { width: 30%; font-size: 4vw; }
   #backBtn { font-size: 4.5vw; }
+  #startOverlay h1 { font-size: 7vw; }
+  #startOverlay p { font-size: 4vw; }
 }
 </style>
 </head>
 <body>
 
+<!-- ===== 開始オーバーレイ ===== -->
+<div id="startOverlay">
+  <h1>クリックしてスタート</h1>
+  <p>全画面表示でスライドショーを開始します</p>
+</div>
+
 <!-- ===== スライドショー画面 ===== -->
-<div class="screen" id="slideshowScreen">
+<div class="screen" id="slideshowScreen" style="display:none;">
   <div id="slidesContainer"></div>
   <div id="phoneFooter">☎ 03-3372-6530</div>
   <div id="caption"></div>
@@ -237,23 +268,6 @@ function nextSlide() {
   current = (current + 1) % slides.length;
   showSlide(current);
 }
-showSlide(0);
-setInterval(nextSlide, 20000);
-
-/* ===== 画面切替 ===== */
-const slideshowScreen = document.getElementById('slideshowScreen');
-const menuScreen = document.getElementById('menuScreen');
-
-slideshowScreen.addEventListener('click', () => {
-  ensureFullscreen();
-  slideshowScreen.style.display = 'none';
-  menuScreen.style.display = 'flex';
-});
-document.getElementById('backBtn').addEventListener('click', () => {
-  menuScreen.style.display = 'none';
-  slideshowScreen.style.display = 'flex';
-  ensureFullscreen();
-});
 
 /* ===== フルスクリーン制御 ===== */
 function ensureFullscreen() {
@@ -264,13 +278,31 @@ function ensureFullscreen() {
     else if (el.msRequestFullscreen) el.msRequestFullscreen();
   }
 }
-document.addEventListener('fullscreenchange', () => {
-  if (!document.fullscreenElement) {
-    setTimeout(ensureFullscreen, 500);
-  }
-});
-setTimeout(ensureFullscreen, 1000);
-</script>
 
+/* ===== スタート操作 ===== */
+const startOverlay = document.getElementById('startOverlay');
+const slideshowScreen = document.getElementById('slideshowScreen');
+const menuScreen = document.getElementById('menuScreen');
+
+startOverlay.addEventListener('click', () => {
+  ensureFullscreen();
+  startOverlay.style.display = 'none';
+  slideshowScreen.style.display = 'flex';
+  showSlide(0);
+  setInterval(nextSlide, 20000);
+});
+
+/* ===== 画面切替 ===== */
+slideshowScreen.addEventListener('click', () => {
+  ensureFullscreen();
+  slideshowScreen.style.display = 'none';
+  menuScreen.style.display = 'flex';
+});
+document.getElementById('backBtn').addEventListener('click', () => {
+  menuScreen.style.display = 'none';
+  slideshowScreen.style.display = 'flex';
+  ensureFullscreen();
+});
+</script>
 </body>
 </html>
